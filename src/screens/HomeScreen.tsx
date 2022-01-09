@@ -27,7 +27,7 @@ import { EventType } from "../../types";
 import { MaterialIcons } from "@expo/vector-icons";
 import tandtlogo from "../../images/T&T2022LogoCropped.png";
 
-import { collection, collectionGroup, getDocs } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db } from "../../firebase";
 import { DateTime as Luxon } from "luxon";
 
@@ -39,17 +39,26 @@ const testEventData: EventType[] = [
   // { month: "Jan", day: 20, eventTitle: "Vrooooom", location: "This place" },
 ];
 
+//home screen as scroll view with upcoming events box
+
 const HomeScreen = () => {
-  const [events, setEvents] = useState(testEventData);
+  const [events, setEvents] = useState<EventType[]>([]);
+  const today = Luxon.now();
 
   useEffect(() => {
     //extract to another function please
     (async () => {
       try {
-        const eventsQuerySnapshot = await getDocs(collection(db, "events"));
+        const todayTimestamp = new Date(today.toString());
+
+        const eventCollectionQuery = query(
+          collection(db, "events"),
+          where("date", ">", todayTimestamp),
+          orderBy("date")
+        );
+        const eventsQuerySnapshot = await getDocs(eventCollectionQuery);
         const eventData = [];
         eventsQuerySnapshot.forEach((doc) => {
-          console.log(doc.data());
           let docData = doc.data();
           let date = Luxon.fromSeconds(parseInt(docData.date.seconds));
           let event: EventType = {
@@ -58,16 +67,17 @@ const HomeScreen = () => {
             month: `${date.monthShort}`,
             location: docData.location,
             day: date.day,
+            imageUri: docData.imageUri,
           };
           eventData.push(event);
         });
-        console.log(eventData);
         setEvents(eventData);
       } catch (error) {
         console.log(error);
       }
     })();
   }, []);
+
   return (
     <Box
       padding="4"
@@ -102,30 +112,11 @@ const HomeScreen = () => {
 
         <Image source={tandtlogo} alt="T&T" size="xs" width="80%" ml="2" />
       </HStack>
-      <Divider mt="1" />
+      {/* <Divider mt="1" /> */}
       <HStack ml="6">
         <Text fontSize="3xl" color="white" bold>
           Next event
         </Text>
-        {/* <IconButton
-          onPress={() => console.log("test")}
-          size={"lg"}
-          // color="white"
-          variant="ghost"
-          _icon={{
-            as: MaterialIcons,
-            name: "menu",
-          }}
-        /> */}
-        {/* <Button
-          mt="10"
-          w="20%"
-          h="20%"
-          bg="white"
-          onPress={() => console.log("test")}
-        >
-          Login
-        </Button> */}
       </HStack>
 
       <Box w="15%" h="0.5%" bgColor="white" rounded="xl" ml="6" mb="2" />
@@ -133,6 +124,7 @@ const HomeScreen = () => {
 
       <Center alignItems="flex-start" flexDirection="row">
         <EventCard />
+        {/* imageUri={events[0].imageUri ?? "test"}  */}
       </Center>
 
       <Actionsheet isOpen={true} disableOverlay>
@@ -140,7 +132,6 @@ const HomeScreen = () => {
           <Text alignSelf="flex-start" fontSize="2xl" bold>
             Upcoming events
           </Text>
-          {/* underline */}
           <Box
             alignSelf="flex-start"
             w="15%"
