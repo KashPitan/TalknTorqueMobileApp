@@ -78,6 +78,10 @@ const HomeScreen = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    console.log(events[0]);
+  }, [events]);
+
   return (
     <Box
       padding="4"
@@ -123,8 +127,7 @@ const HomeScreen = () => {
       {/* <Line x1="0" y1="0" x2="100" y2="0" stroke="white" strokeWidth="3" /> */}
 
       <Center alignItems="flex-start" flexDirection="row">
-        <EventCard />
-        {/* imageUri={events[0].imageUri ?? "test"}  */}
+        {events[0] && <EventCard event={events[0]} />}
       </Center>
 
       <Actionsheet isOpen={true} disableOverlay>
@@ -142,7 +145,6 @@ const HomeScreen = () => {
           <Box w="full" mt="2">
             <UpcomingEventList eventList={events} />
           </Box>
-          {/* <UpcomingEvent /> */}
         </Actionsheet.Content>
       </Actionsheet>
     </Box>
