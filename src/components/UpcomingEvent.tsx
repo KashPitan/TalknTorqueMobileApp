@@ -19,7 +19,7 @@ const UpcomingEvent: FC<{ event: EventType }> = ({
       startIcon={
         <Box
           bgColor="red.400"
-          w="35%"
+          w="25%"
           rounded="lg"
           borderWidth="3"
           borderColor="red.600"
@@ -42,8 +42,8 @@ const UpcomingEvent: FC<{ event: EventType }> = ({
       }
     >
       <HStack>
-        <Center>
-          <Text bold fontSize="xl" color="red.600">
+        <Center w="70%">
+          <Text alignSelf="flex-start" bold fontSize="xl" color="red.600">
             {event.name}
           </Text>
           <Text alignSelf="flex-start" fontSize="sm">
