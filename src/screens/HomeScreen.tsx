@@ -12,10 +12,12 @@ import {
   Button,
   Divider,
   VStack,
+  ScrollView,
 } from "native-base";
 import React, { useEffect, useState } from "react";
 // import { Line } from "react-native-svg";
 
+import Header from "../components/Header";
 import EventCard from "../components/EventCard";
 // import EventCard from "../components/EventCard2";
 
@@ -78,76 +80,96 @@ const HomeScreen = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    console.log(events[0]);
-  }, [events]);
+  // useEffect(() => {
+  //   console.log(events[0]);
+  // }, [events]);
 
   return (
-    <Box
-      padding="4"
-      height="100%"
-      bg={{
-        linearGradient: {
-          colors: ["red.400", "red.600"],
-          start: [0, 1],
-          end: [1, 0],
-        },
-      }}
-    >
-      <HStack marginTop="6">
-        <Menu
-          w="190"
-          trigger={(triggerProps) => {
-            return (
-              <Pressable
-                onPress={() => console.log("test")}
-                accessibilityLabel="More options menu"
-                {...triggerProps}
-              >
-                <HamburgerIcon color="white" size="lg" />
-              </Pressable>
-            );
-          }}
-        >
-          <Menu.Item>SF Pro</Menu.Item>
-          <Menu.Item>Helvetica</Menu.Item>
-          <Menu.Item>Cookie</Menu.Item>
-        </Menu>
+    <>
+      <Header />
 
-        <Image source={tandtlogo} alt="T&T" size="xs" width="80%" ml="2" />
-      </HStack>
-      {/* <Divider mt="1" /> */}
-      <HStack ml="6">
-        <Text fontSize="3xl" color="white" bold>
-          Next event
-        </Text>
-      </HStack>
+      <Box
+        p="4"
+        pt="2"
+        height="100%"
+        bg={{
+          linearGradient: {
+            colors: ["red.400", "red.600"],
+            start: [0, 1],
+            end: [1, 0],
+          },
+        }}
+      >
+        <ScrollView>
+          <HStack ml="6">
+            <Text fontSize="3xl" color="white" bold>
+              Next event
+            </Text>
+          </HStack>
 
-      <Box w="15%" h="0.5%" bgColor="white" rounded="xl" ml="6" mb="2" />
-      {/* <Line x1="0" y1="0" x2="100" y2="0" stroke="white" strokeWidth="3" /> */}
+          <Box w="15%" h="0.5%" bgColor="white" rounded="xl" ml="6" mb="2" />
+          {/* <Line x1="0" y1="0" x2="100" y2="0" stroke="white" strokeWidth="3" /> */}
 
-      <Center alignItems="flex-start" flexDirection="row">
-        {events[0] && <EventCard event={events[0]} />}
-      </Center>
+          <Center alignItems="flex-start" flexDirection="row">
+            {events[0] && <EventCard event={events[0]} />}
+          </Center>
 
-      <Actionsheet isOpen={true} disableOverlay>
-        <Actionsheet.Content px="4">
-          <Text alignSelf="flex-start" fontSize="2xl" bold>
-            Upcoming events
-          </Text>
-          <Box
-            alignSelf="flex-start"
-            w="15%"
-            h="1%"
-            bgColor="red.400"
-            rounded="xl"
-          />
-          <Box w="full" mt="2">
-            <UpcomingEventList eventList={events} />
-          </Box>
-        </Actionsheet.Content>
-      </Actionsheet>
-    </Box>
+          <Center>
+            <Box bgColor="gray.200" rounded="2xl" mt="5" p="3">
+              <Text alignSelf="flex-start" fontSize="2xl" bold>
+                Upcoming events
+              </Text>
+              <Box
+                alignSelf="flex-start"
+                w="15%"
+                h="1%"
+                bgColor="red.400"
+                rounded="xl"
+              />
+              <Box w="full" mt="2">
+                <UpcomingEventList eventList={events} />
+              </Box>
+            </Box>
+          </Center>
+
+          <Center>
+            <Box bgColor="gray.200" rounded="2xl" mt="5" p="3">
+              <Text alignSelf="flex-start" fontSize="2xl" bold>
+                Past events
+              </Text>
+              <Box
+                alignSelf="flex-start"
+                w="15%"
+                h="1%"
+                bgColor="red.400"
+                rounded="xl"
+              />
+              <Box w="full" mt="2">
+                <UpcomingEventList eventList={events} />
+              </Box>
+            </Box>
+          </Center>
+
+          {/* <Actionsheet isOpen={true} disableOverlay>
+          <Actionsheet.Content px="4">
+            <Text alignSelf="flex-start" fontSize="2xl" bold>
+              Upcoming events
+            </Text>
+            <Box
+              alignSelf="flex-start"
+              w="15%"
+              h="1%"
+              bgColor="red.400"
+              rounded="xl"
+            />
+            <Box w="full" mt="2">
+              <UpcomingEventList eventList={events} />
+            </Box>
+          </Actionsheet.Content>
+        </Actionsheet> */}
+        </ScrollView>
+      </Box>
+    </>
   );
 };
 
