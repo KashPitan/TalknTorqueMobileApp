@@ -20,14 +20,14 @@ const EventCard: FC<{ event: EventType }> = ({ event }): JSX.Element => {
     })();
   }, []);
   return (
-    <Box rounded="2xl" bg="gray.200" w="90%" h="67%">
+    <Box w="90%" h="67%">
       <VStack alignItems="center">
         {downloadUrl && (
           <ImageBackground
             source={{ uri: downloadUrl }}
             resizeMode="cover"
             style={styles.image}
-            borderRadius={20}
+            borderRadius={15}
           >
             <Center
               bg="gray.100"
@@ -42,25 +42,28 @@ const EventCard: FC<{ event: EventType }> = ({ event }): JSX.Element => {
             >
               <VStack>
                 <Text bold fontSize="sm">
-                  We Love Cars
+                  {event.name}
                 </Text>
               </VStack>
             </Center>
 
-            <EventCardDate />
+            <Center
+              bg="gray.100"
+              position="absolute"
+              top="5"
+              left="5"
+              px="3"
+              py="0.5"
+              rounded="xl"
+              borderWidth="2"
+              borderColor="gray.300"
+            >
+              <EventCardDate
+                eventDate={{ month: event.month, day: event.day }}
+              />
+            </Center>
           </ImageBackground>
         )}
-
-        {/* {downloadUrl && (
-          <Image
-            roundedTop="2xl"
-            source={{ uri: downloadUrl }}
-            alt="T&T"
-            size="xl"
-            h="100%"
-            width="full"
-          />
-        )} */}
       </VStack>
     </Box>
   );

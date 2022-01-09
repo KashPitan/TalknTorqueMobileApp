@@ -1,29 +1,22 @@
 import { Center, VStack, Text } from "native-base";
-import React from "react";
+import React, { FC } from "react";
 import { StyleSheet, View } from "react-native";
+import { EventDateType } from "../../types";
 
-const EventCardDate = () => {
+const EventCardDate: FC<{ eventDate: EventDateType }> = ({
+  eventDate,
+}): JSX.Element => {
   return (
-    <Center
-      bg="gray.100"
-      position="absolute"
-      bottom="-90"
-      left="5"
-      px="3"
-      py="0.5"
-      rounded="xl"
-      borderWidth="2"
-      borderColor="gray.300"
-    >
+    <Center>
       <VStack>
         <Center>
           <Text bold fontSize="2xl">
-            2
+            {eventDate.day}
           </Text>
         </Center>
 
         <Text bold fontSize="sm">
-          DEC
+          {eventDate.month}
         </Text>
       </VStack>
     </Center>

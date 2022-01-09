@@ -4,4 +4,10 @@ export type EventType = {
   name: string;
   location: string;
   description?: string;
+  imageUri?: string;
+};
+
+export type EventDateType = {
+  month: string;
+  day: number;
 };
