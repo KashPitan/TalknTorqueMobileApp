@@ -1,12 +1,15 @@
-import { StyleSheet } from "react-native";
+import { LogBox, StyleSheet } from "react-native";
 import { NativeBaseProvider } from "native-base";
+import React from "react";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import HomeScreen from "./src/screens/HomeScreen";
+
 import RegisterScreen from "./src/screens/RegisterScreen";
 import SignInScreen from "./src/screens/SignInScreen";
+import EventScreen from "./src/screens/EventScreen";
 
 //for luxon intl error
 import "intl";
@@ -20,6 +23,9 @@ if (Platform.OS === "android") {
   }
 }
 
+LogBox.ignoreLogs(["Setting a timer"]);
+// LogBox.ignoreLogs(["AsyncStorage has been extracted from react-native"]);
+
 const Stack = createNativeStackNavigator();
 const config = {
   dependencies: {
@@ -32,11 +38,12 @@ export default function App() {
     <NativeBaseProvider config={config}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Home Screen"
+          initialRouteName="Event Screen"
           screenOptions={{
             headerShown: false,
           }}
         >
+          <Stack.Screen name="Event Screen" component={EventScreen} />
           <Stack.Screen name="Home Screen" component={HomeScreen} />
           <Stack.Screen name="Register Screen" component={RegisterScreen} />
           <Stack.Screen name="SignIn Screen" component={SignInScreen} />

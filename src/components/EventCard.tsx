@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { StyleSheet, ImageBackground } from "react-native";
-import { Box, Button, Text, VStack, Image, Center } from "native-base";
-import TTPic from "../../assets/images/TTPic.png";
+import { Box, Text, VStack, Center } from "native-base";
 import EventCardDate from "./EventCardDate";
 import { storage } from "../../firebase";
 import { getDownloadURL, ref } from "firebase/storage";
@@ -16,7 +15,7 @@ const EventCard: FC<{ event: EventType }> = ({ event }): JSX.Element => {
         firebaseStorageReference
       );
       setDownloadUrl(firebaseDownloadUrl);
-      console.log(firebaseDownloadUrl);
+      // console.log(firebaseDownloadUrl);
     })();
   }, []);
   return (

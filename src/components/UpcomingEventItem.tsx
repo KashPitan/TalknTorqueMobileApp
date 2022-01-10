@@ -4,17 +4,17 @@ import React, { FC } from "react";
 import { StyleSheet } from "react-native";
 import { EventType } from "../../types";
 
-const UpcomingEvent: FC<{ event: EventType }> = ({
+const UpcomingEventItem: FC<{ event: EventType }> = ({
   children,
   event,
 }): JSX.Element => {
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
   return (
     <Actionsheet.Item
-      bg="gray.200"
+      bg="gray.300"
       p="0"
       my="1"
-      onPress={() => console.log(event.name)}
+      onPress={() => navigation.navigate("Event Screen", { event })}
       rounded="2xl"
       startIcon={
         <Box
@@ -55,6 +55,6 @@ const UpcomingEvent: FC<{ event: EventType }> = ({
   );
 };
 
-export default UpcomingEvent;
+export default UpcomingEventItem;
 
 const styles = StyleSheet.create({});

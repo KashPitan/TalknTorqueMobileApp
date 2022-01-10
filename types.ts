@@ -5,6 +5,7 @@ export type EventType = {
   location: string;
   description?: string;
   imageUri?: string;
+  fullDate?: string;
 };
 
 export type EventDateType = {
