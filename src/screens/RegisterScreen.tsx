@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { StyleSheet } from "react-native";
 import { Input, Center, Button, Box, Text } from "native-base";
+import React from "react";
 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
@@ -31,7 +32,18 @@ const RegisterScreen = () => {
   };
 
   return (
-    <Box w="100%" h="100%" padding="10" bg="red.600">
+    <Box
+      w="100%"
+      h="100%"
+      padding="10"
+      bg={{
+        linearGradient: {
+          colors: ["red.400", "red.600"],
+          start: [0, 1],
+          end: [1, 0],
+        },
+      }}
+    >
       <Center flex={1}>
         <Text fontSize="3xl" color="white" bold>
           Create New Account

@@ -1,5 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
-import { Actionsheet, Box, HStack, VStack, Text, Center } from "native-base";
+import {
+  Actionsheet,
+  Box,
+  HStack,
+  VStack,
+  Text,
+  Center,
+  Button,
+} from "native-base";
 import React, { FC } from "react";
 import { StyleSheet } from "react-native";
 import { EventType } from "../../types";
@@ -10,20 +18,25 @@ const UpcomingEventItem: FC<{ event: EventType }> = ({
 }): JSX.Element => {
   const navigation = useNavigation();
   return (
-    <Actionsheet.Item
+    <Button
+      style={styles.actionSheetItem}
       bg="gray.300"
       p="0"
       my="1"
       onPress={() => navigation.navigate("Event Screen", { event })}
-      rounded="2xl"
-      startIcon={
+      rounded="lg"
+      // startIcon={}
+    >
+      <HStack>
         <Box
           bgColor="red.400"
-          w="25%"
+          w="23%"
+          // h="full"
           rounded="lg"
           borderWidth="3"
           borderColor="red.600"
-          mr="2"
+          // mr="2"
+          // ml="3"
         >
           <Center>
             <VStack>
@@ -39,22 +52,35 @@ const UpcomingEventItem: FC<{ event: EventType }> = ({
             </VStack>
           </Center>
         </Box>
-      }
-    >
-      <HStack>
-        <Center w="70%">
-          <Text alignSelf="flex-start" bold fontSize="xl" color="red.600">
+        <Center w="74%" ml="2">
+          <Text
+            underline
+            alignSelf="flex-start"
+            bold
+            fontSize="xl"
+            color="red.600"
+          >
             {event.name}
           </Text>
           <Text alignSelf="flex-start" fontSize="sm">
             {event.location}
           </Text>
+          <Text alignSelf="flex-start" isTruncated>
+            {event.fullDate}
+          </Text>
         </Center>
       </HStack>
-    </Actionsheet.Item>
+    </Button>
   );
 };
 
 export default UpcomingEventItem;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  actionSheetItem: {
+    // shadowColor: "#171717",
+    // shadowOffset: { width: -2, height: 4 },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 3,
+  },
+});

@@ -3,11 +3,9 @@ import { StyleSheet, Image as rnImage } from "react-native";
 import { Input, Center, Button, Box, Image, Text } from "native-base";
 import { auth } from "../../firebase";
 import { TTLOGO } from "../../assets/index";
-// import tandtlogo from "../../assets/T&T2022Logo.png";
 import tandtlogo from "../../images/T&T2022Logo.png";
+import React from "react";
 // const logo = require("../../images/T&T2022Logo.png");
-
-// const tandtlogoUri = rnImage.resolveAssetSource(tandtlogo).uri;
 
 import { signInWithEmailAndPassword } from "firebase/auth";
 
@@ -32,9 +30,6 @@ const SignInScreen = ({ navigation }) => {
     } catch (error) {
       console.log(error);
       setLoading(false);
-
-      // const errorCode = error.code;
-      // const errorMessage = error.message;
     }
   };
 

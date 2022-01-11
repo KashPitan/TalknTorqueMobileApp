@@ -8,10 +8,9 @@ const UpcomingEvents: FC<{ events: EventType[] }> = ({
   events,
 }): JSX.Element => {
   return (
-    <Center p="3">
-      {/* <Box bgColor="gray.200" rounded="2xl" mt="5" p="3" w="full"> */}
+    <Center p="6" borderTopRadius={40} bgColor="gray.200">
       <Text alignSelf="flex-start" fontSize="2xl" bold>
-        Upcoming events
+        Upcoming Events
       </Text>
       <Box
         alignSelf="flex-start"
@@ -29,7 +28,6 @@ const UpcomingEvents: FC<{ events: EventType[] }> = ({
           <Text>No Upcoming Events :(</Text>
         )}
       </Box>
-      {/* </Box> */}
     </Center>
   );
 };

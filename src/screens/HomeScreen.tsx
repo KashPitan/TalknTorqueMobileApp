@@ -4,20 +4,11 @@ import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import EventCard from "../components/EventCard";
 import UpcomingEvents from "../components/UpcomingEvents";
+import ImageCarousel from "../components/ImageCarousel";
 
 import { EventType } from "../../types";
 
 import { getMostRecentEvents } from "../helper/getMostRecentEvents";
-
-const testEventData: EventType[] = [
-  { month: "Dec", day: 2, name: "We love cars", location: "Here" },
-  { month: "Sep", day: 22, name: "Look at cars", location: "There" },
-  { month: "Apr", day: 20, name: "Watch Cars", location: "Everywhere" },
-  { month: "Oct", day: 17, name: "Buy Cars", location: "This place" },
-  { month: "Jan", day: 20, name: "Vrooooom", location: "This place" },
-];
-
-//home screen as scroll view with upcoming events box
 
 const HomeScreen = () => {
   const [events, setEvents] = useState<EventType[]>([]);
@@ -32,11 +23,11 @@ const HomeScreen = () => {
   return (
     <>
       <Header />
-      <ScrollView>
+      <ScrollView bg="red.500">
         <Box
-          p="4"
           pt="0"
-          height="35%"
+          pb="0"
+          height="39%"
           bg={{
             linearGradient: {
               colors: ["red.400", "red.600"],
@@ -45,20 +36,28 @@ const HomeScreen = () => {
             },
           }}
         >
-          <HStack ml="6">
-            <Text fontSize="3xl" color="white" bold>
-              Next event
-            </Text>
-          </HStack>
+          <Box>
+            <HStack>
+              <Text fontSize="3xl" color="white" bold ml="7">
+                Next event
+              </Text>
+            </HStack>
 
-          <Box w="15%" h="1" bgColor="white" rounded="xl" ml="7" mb="2" />
+            <Box w="15%" h="1" bgColor="white" rounded="xl" mb="2" ml="8" />
 
-          <Center alignItems="flex-start" flexDirection="row">
-            {events[0] && <EventCard event={events[0]} />}
-          </Center>
+            <Center alignItems="flex-start" flexDirection="row" px="2" mb="5">
+              {events[0] && <EventCard event={events[0]} />}
+            </Center>
+          </Box>
+
+          {events && (
+            <>
+              <UpcomingEvents events={events} />
+              <ImageCarousel />
+              {/* <UpcomingEvents events={events} /> */}
+            </>
+          )}
         </Box>
-        <UpcomingEvents events={events} />
-        <UpcomingEvents events={events} />
       </ScrollView>
     </>
   );

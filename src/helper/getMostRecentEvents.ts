@@ -1,5 +1,5 @@
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
-import { DateTime as Luxon } from "luxon";
+import { DateTime, DateTime as Luxon } from "luxon";
 import { EventType } from "../../types";
 import { db } from "../../firebase";
 
@@ -29,7 +29,7 @@ export const getMostRecentEvents = async () => {
         location: docData.location,
         day: date.day,
         imageUri: docData.imageUri,
-        fullDate: date.toString(),
+        fullDate: date.toFormat("cccc, d LLLL, yyyy"),
       };
 
       eventData.push(event);

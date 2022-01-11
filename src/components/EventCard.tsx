@@ -31,7 +31,7 @@ const EventCard: FC<{ event: EventType }> = ({ event }): JSX.Element => {
             <Center
               bg="gray.100"
               position="absolute"
-              top="270"
+              top="271"
               left="0"
               px="3"
               py="0.5"
