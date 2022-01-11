@@ -11,6 +11,7 @@ const RegisterScreen = () => {
   const [loading, setLoading] = useState(false);
 
   const buttonWidth = "85%";
+  const buttonHeight = "16";
   const inputFieldWidth = "85%";
 
   const handleRegister = async () => {
@@ -68,7 +69,7 @@ const RegisterScreen = () => {
         {loading ? (
           <Button
             w={buttonWidth}
-            h="7%"
+            h={buttonHeight}
             my="10"
             bg="white"
             size="lg"
@@ -81,7 +82,7 @@ const RegisterScreen = () => {
         ) : (
           <Button
             w={buttonWidth}
-            h="7%"
+            h={buttonHeight}
             my="10"
             bg="white"
             size="lg"

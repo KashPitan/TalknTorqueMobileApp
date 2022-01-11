@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, Image as rnImage } from "react-native";
+import { StyleSheet, Image as rnImage, Keyboard } from "react-native";
 import { Input, Center, Button, Box, Image, Text } from "native-base";
 import { auth } from "../../firebase";
 import { TTLOGO } from "../../assets/index";
@@ -15,10 +15,12 @@ const SignInScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
 
   const buttonWidth = "85%";
+  const buttonHeight = "16";
   const inputFieldWidth = "85%";
 
   const handleSignIn = async () => {
     setLoading(true);
+    Keyboard.dismiss();
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -71,7 +73,7 @@ const SignInScreen = ({ navigation }) => {
           <Button
             mt="10"
             w={buttonWidth}
-            h="7%"
+            h={buttonHeight}
             bg="black"
             onPress={() => handleSignIn()}
             isLoading
@@ -83,7 +85,7 @@ const SignInScreen = ({ navigation }) => {
           <Button
             mt="10"
             w={buttonWidth}
-            h="7%"
+            h={buttonHeight}
             bg="black"
             onPress={() => handleSignIn()}
           >
@@ -93,7 +95,7 @@ const SignInScreen = ({ navigation }) => {
 
         <Button
           w={buttonWidth}
-          h="7%"
+          h={buttonHeight}
           my="3"
           bg="white"
           onPress={() => navigation.navigate("Register Screen")}
