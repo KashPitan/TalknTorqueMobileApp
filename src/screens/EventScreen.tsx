@@ -8,6 +8,8 @@ import {
   Icon,
   HStack,
   IconButton,
+  Link,
+  Button,
 } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 
@@ -34,42 +36,27 @@ const dummyEvent: EventType = {
 const EventScreen = ({ route, children }): JSX.Element => {
   const navigation = useNavigation();
   const { event } = route.params ?? dummyEvent;
-  // const imageUri = event ? event.imageUri : null;
+  const imageUri = event ? event.imageUri : null;
 
-  // const firebaseStorageReference = ref(storage, imageUri);
-  // const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
-  // // const [eventState, setEventState] = useState(dummyEvent);
+  const firebaseStorageReference = ref(storage, imageUri);
+  const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
 
-  // useEffect(() => {
-  //   console.log("event", event.imageUri);
-  //   // console.log(route);
-  // }, []);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const firebaseDownloadUrl = await getDownloadURL(
-  //       firebaseStorageReference
-  //     );
-  //     setDownloadUrl(firebaseDownloadUrl);
-  //     // console.log(firebaseDownloadUrl);
-  //   })();
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log("event", event);
-  //   // console.log(route);
-  // }, [eventState]);
+  useEffect(() => {
+    (async () => {
+      const firebaseDownloadUrl = await getDownloadURL(
+        firebaseStorageReference
+      );
+      setDownloadUrl(firebaseDownloadUrl);
+    })();
+  }, []);
 
   return (
     <>
       <VStack>
         <ScrollView>
-          {/* <Header /> */}
-          {/* <Image source={{ uri: event.imageUri }}></Image> */}
-          {/* <Image source={TTPic} size="2xl" w="full" h="400"></Image> */}
           <ImageBackground
-            // source={event ? { uri: downloadUrl } : TTPic}
-            source={TTPic}
+            source={event ? { uri: downloadUrl } : TTPic}
+            // source={TTPic}
             resizeMode="cover"
             style={styles.image}
           >
@@ -115,19 +102,6 @@ const EventScreen = ({ route, children }): JSX.Element => {
                 {event && event.name}
                 {!event && "VROOOOOOOM"}
               </Text>
-              <HStack>
-                <Icon
-                  as={MaterialCommunityIcons}
-                  name="map-marker"
-                  color="red.400"
-                  _dark={{
-                    color: "warmGray.50",
-                  }}
-                />
-                <Text bold fontSize="lg" mt="1" ml="2">
-                  {event && event.location}
-                </Text>
-              </HStack>
 
               <HStack mt="2" ml="1">
                 <Icon
@@ -139,16 +113,39 @@ const EventScreen = ({ route, children }): JSX.Element => {
                   }}
                   size="sm"
                 />
-                <Text bold ml="3">
-                  Jan 3, 5:00 AM
+                <Text fontSize="lg" bold ml="3" mb="1">
+                  {event.fullDate}
                 </Text>
               </HStack>
 
-              <Text mt="5" white-space="pre-line">
-                {`This is the description of this really cool event lalalalalal
+              <HStack>
+                <Icon
+                  as={MaterialCommunityIcons}
+                  name="map-marker"
+                  color="red.400"
+                  _dark={{
+                    color: "warmGray.50",
+                  }}
+                />
+                <Text bold mt="1" ml="2">
+                  {event && event.location}
+                </Text>
+              </HStack>
 
-                    we're gonna do cool stuff and drive cars vroooooooooooom vroom
-                vroom vroom`}
+              {event.gmapsLink && (
+                <Center>
+                  <Link href={event.gmapsLink}>
+                    <Box p="3" rounded="2xl" w="40%" mt="3" bgColor="red.400">
+                      <Center>
+                        <Text bold>Open in maps</Text>
+                      </Center>
+                    </Box>
+                  </Link>
+                </Center>
+              )}
+
+              <Text mt="5" white-space="pre-line">
+                {event.description}
               </Text>
             </Box>
           </Box>

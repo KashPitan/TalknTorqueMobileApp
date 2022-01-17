@@ -30,6 +30,7 @@ export const getMostRecentEvents = async () => {
         day: date.day,
         imageUri: docData.imageUri,
         fullDate: date.toFormat("cccc, d LLLL, yyyy"),
+        gmapsLink: docData.gmapsLink,
       };
 
       eventData.push(event);

@@ -6,6 +6,7 @@ export type EventType = {
   description?: string;
   imageUri?: string;
   fullDate?: string;
+  gmapsLink?: string;
 };
 
 export type EventDateType = {
