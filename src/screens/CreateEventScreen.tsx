@@ -14,39 +14,82 @@ import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 
 import uuid from "react-native-uuid";
+import { DateTime as Luxon } from "luxon";
 
 import DateTimePicker from "@react-native-community/datetimepicker";
 import ImagePicker from "../components/ImagePicker";
 
+import { collection, addDoc, Timestamp } from "firebase/firestore";
+
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "../../firebase";
+import { storage, db } from "../../firebase";
+
+import { EventRecordType } from "../../types";
 
 const CreateEventScreen = () => {
   const [formState, setFormState] = useState({
     name: "",
-    date: new Date(1598051730000),
+    initialDate: new Date(Luxon.now().toMillis()),
     description: "",
     location: "",
     gmapsLink: "",
+    time: "",
+    displayTime: "",
+    date: "",
+    displayDate: "",
+    day: 0,
+    month: 0,
+    year: 0,
+    hours: 0,
+    minutes: 0,
   });
 
   const [image, setImage] = useState<null | string>(null);
+  const [isSubmittingForm, setIsSubmittingForm] = useState<boolean>(false);
 
   const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [mode, setMode] = useState<string>("date");
-  const inputFieldWidth = "85%";
 
   const onChangeDate = (event, selectedDate) => {
-    //this function is called when you hit confirm or cancel which causes the app to crash
-    //if cancel is hit because there is no date being passed through
-    //to prevent it trying to run the logic below and failing this line checks if the date
-    //   is being changed first
+    // this function is called when you hit confirm or cancel which causes the app to crash
+    // if cancel is hit because there is no date being passed through
+    // to prevent it trying to run the logic below and failing this line checks if the date
+    // is being changed first
     if (!selectedDate) return;
 
-    const currentDate = selectedDate || formState.date;
-    setFormState({ ...formState, date: selectedDate });
+    //remove 'Z' from end of date string
+    const splitDate = selectedDate.toString().split("G")[0].trim();
+    // console.log(splitDate);
+
+    const formattedDate = Luxon.fromFormat(
+      splitDate,
+      "EEE MMM dd yyyy HH:mm:ss"
+    );
+    // console.log(formattedDate);
+
+    if (mode === "date") {
+      setFormState({
+        ...formState,
+        displayDate: formattedDate.toFormat("EEE MMM dd yyyy"),
+        date: splitDate,
+        day: formattedDate.day,
+        month: formattedDate.month - 1,
+        year: formattedDate.year,
+      });
+    } else if (mode === "time") {
+      console.log(formattedDate.toFormat("HH:mm:ss"));
+
+      setFormState({
+        ...formState,
+        displayTime: formattedDate.toFormat("HH:mm:ss"),
+        time: splitDate,
+        hours: formattedDate.hour,
+        minutes: formattedDate.minute,
+      });
+    }
+
+    // const currentDate = selectedDate || formState.date;
     setDatePickerVisible(false);
-    console.log("date changing");
   };
 
   const showTimePicker = () => {
@@ -61,26 +104,47 @@ const CreateEventScreen = () => {
 
   const onSubmit = async () => {
     console.log("submit");
-    // send image to storage first
+    console.log(formState);
+    setIsSubmittingForm(true);
 
-    // const task = await eventImageRef.putFile();
-    // get response saying image added
-    // get image storage url
-    // add to form data and submit
-    // create new event record
-    uploadImage();
+    const dateObjectForcConversion = new Date(
+      formState.year,
+      formState.month,
+      formState.day,
+      formState.hours,
+      formState.minutes
+    );
+
+    console.log(dateObjectForcConversion.getTime() / 1000);
+    const stamp = new Timestamp(dateObjectForcConversion.getTime() / 1000, 0);
+    console.log(stamp);
+
+    // const eventImageDownloadUrl = await uploadImage();
+    const newEventDoc: EventRecordType = {
+      name: formState.name,
+      description: formState.description,
+      location: formState.location,
+      gmapsLink: formState.gmapsLink,
+      //   imageUri: eventImageDownloadUrl,
+      //   date: formState.initialDate.toUTCString(),
+      date: stamp,
+    };
+    const docRef = await addDoc(collection(db, "test-events"), newEventDoc);
+    setIsSubmittingForm(false);
   };
 
   const uploadImage = async () => {
     if (!image) return;
 
     const eventImageRef = ref(storage, uuid.v4());
+
     //convert image to array of bytes
     const img = await fetch(image);
     const bytes = await img.blob();
     const upload = await uploadBytes(eventImageRef, bytes);
-    console.log(upload);
-    console.log(await getDownloadURL(eventImageRef));
+
+    const eventImageDownloadUrl = await getDownloadURL(eventImageRef);
+    return eventImageDownloadUrl;
   };
 
   const setImageState = (imageUri: string) => {
@@ -142,7 +206,9 @@ const CreateEventScreen = () => {
             <FormControl.Label _text={{ bold: true }}>Date</FormControl.Label>
             <Input
               value={
-                formState.date ? formState.date.toString() : "Date not set"
+                formState.date
+                  ? formState.displayDate.toString()
+                  : "Date not set"
               }
               placeholder="Date"
               placeholderTextColor="gray.400"
@@ -158,12 +224,9 @@ const CreateEventScreen = () => {
           <FormControl isRequired my="1">
             <FormControl.Label _text={{ bold: true }}>Time</FormControl.Label>
             <Input
-              value={
-                formState.date ? formState.date.toString() : "Date not set"
-              }
+              value={formState.time ? formState.displayTime : "Time not set"}
               placeholder="Time"
               placeholderTextColor="gray.400"
-              onChangeText={(date) => setFormState({ ...formState, date })}
               size="lg"
               color="gray.400"
               isDisabled={true}
@@ -179,11 +242,26 @@ const CreateEventScreen = () => {
             <ImagePicker setParentImageState={setImageState} image={image} />
           </FormControl>
 
-          <Button onPress={onSubmit} mt="5" colorScheme="cyan">
+          <Button
+            onPress={onSubmit}
+            isLoading={isSubmittingForm}
+            isLoadingText="Submitting"
+            colorScheme="cyan"
+            mt="5"
+          >
             Submit
           </Button>
         </VStack>
       </ScrollView>
+      {datePickerVisible && (
+        <DateTimePicker
+          value={formState.initialDate}
+          mode={mode}
+          is24Hour={true}
+          display="default"
+          onChange={onChangeDate}
+        />
+      )}
     </>
   );
 };
