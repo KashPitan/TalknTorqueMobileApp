@@ -1,5 +1,7 @@
 import { Box, Text, IconButton, HStack, Center, ScrollView } from "native-base";
 import React, { useEffect, useState } from "react";
+import { db } from "../../firebase";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 
 import Header from "../components/Header";
 import EventCard from "../components/EventCard";
@@ -18,6 +20,21 @@ const HomeScreen = () => {
       const eventData = await getMostRecentEvents();
       setEvents(eventData);
     })();
+
+    // const eventCollectionListener = onSnapshot(
+    //   collection(db, "events"),
+    //   (change) => {
+    //     // console.log(change.data);
+    //     const source = change.metadata.hasPendingWrites ? "Local" : "Server";
+
+    //     change.forEach((snapshot) => {
+    //       console.log(source, snapshot.data());
+    //       // console.log(snapshot.)
+    //     });
+    //   }
+    // );
+
+    // return () => eventCollectionListener();
   }, []);
 
   return (
@@ -54,7 +71,6 @@ const HomeScreen = () => {
             <>
               <UpcomingEvents events={events} />
               <ImageCarousel />
-              {/* <UpcomingEvents events={events} /> */}
             </>
           )}
         </Box>
