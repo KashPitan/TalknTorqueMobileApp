@@ -43,6 +43,7 @@ const CreateEventScreen = () => {
     hours: 0,
     minutes: 0,
   });
+  const [errors, setErrors] = useState<string | null>(null);
 
   const [image, setImage] = useState<null | string>(null);
   const [isSubmittingForm, setIsSubmittingForm] = useState<boolean>(false);
@@ -59,13 +60,11 @@ const CreateEventScreen = () => {
 
     //remove 'Z' from end of date string
     const splitDate = selectedDate.toString().split("G")[0].trim();
-    // console.log(splitDate);
 
     const formattedDate = Luxon.fromFormat(
       splitDate,
       "EEE MMM dd yyyy HH:mm:ss"
     );
-    // console.log(formattedDate);
 
     if (mode === "date") {
       setFormState({
@@ -88,7 +87,6 @@ const CreateEventScreen = () => {
       });
     }
 
-    // const currentDate = selectedDate || formState.date;
     setDatePickerVisible(false);
   };
 
@@ -103,9 +101,12 @@ const CreateEventScreen = () => {
   };
 
   const onSubmit = async () => {
-    console.log("submit");
-    console.log(formState);
     setIsSubmittingForm(true);
+    const isValidated = validate();
+    if (isValidated === false) {
+      setIsSubmittingForm(false);
+      return;
+    }
 
     const dateObjectForcConversion = new Date(
       formState.year,
@@ -115,21 +116,20 @@ const CreateEventScreen = () => {
       formState.minutes
     );
 
-    console.log(dateObjectForcConversion.getTime() / 1000);
     const stamp = new Timestamp(dateObjectForcConversion.getTime() / 1000, 0);
-    console.log(stamp);
 
-    // const eventImageDownloadUrl = await uploadImage();
+    const eventImageDownloadUrl = await uploadImage();
     const newEventDoc: EventRecordType = {
       name: formState.name,
       description: formState.description,
       location: formState.location,
       gmapsLink: formState.gmapsLink,
-      //   imageUri: eventImageDownloadUrl,
+      imageUri: eventImageDownloadUrl,
       //   date: formState.initialDate.toUTCString(),
       date: stamp,
     };
     const docRef = await addDoc(collection(db, "test-events"), newEventDoc);
+
     setIsSubmittingForm(false);
   };
 
@@ -151,6 +151,36 @@ const CreateEventScreen = () => {
     setImage(imageUri);
   };
 
+  const validate = () => {
+    if (formState.name === "") {
+      setErrors("Event name is required");
+      console.log("hi");
+      return false;
+    }
+
+    if (formState.day === 0) {
+      setErrors("Date is required");
+      return false;
+    }
+
+    if (formState.hours === 0) {
+      setErrors("Time is required");
+      return false;
+    }
+
+    if (formState.location === "") {
+      setErrors("Location is required");
+      return false;
+    }
+
+    if (formState.gmapsLink) {
+      if (formState.gmapsLink.includes("https://goo.gl/maps/")) {
+        setErrors("Invalid google maps link");
+        return false;
+      }
+    }
+  };
+
   return (
     <>
       <Center mt="4">
@@ -166,7 +196,7 @@ const CreateEventScreen = () => {
               Event Name
             </FormControl.Label>
             <Input
-              placeholder="John"
+              placeholder="Event name not set"
               size="lg"
               onChangeText={(value) =>
                 setFormState({ ...formState, name: value })
@@ -198,7 +228,6 @@ const CreateEventScreen = () => {
               }
               size="lg"
               color="black"
-              //   w={inputFieldWidth}
             />
           </FormControl>
 
@@ -216,7 +245,6 @@ const CreateEventScreen = () => {
               size="lg"
               color="gray.400"
               isDisabled={true}
-              //   w={inputFieldWidth}
             />
             <Button onPress={() => showDatePicker()}>Select Date</Button>
           </FormControl>
@@ -240,6 +268,12 @@ const CreateEventScreen = () => {
               Event Image
             </FormControl.Label>
             <ImagePicker setParentImageState={setImageState} image={image} />
+
+            {errors && (
+              <Box>
+                <Text>Error: {errors}</Text>
+              </Box>
+            )}
           </FormControl>
 
           <Button
