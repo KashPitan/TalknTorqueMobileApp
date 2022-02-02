@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export type EventType = {
   month: string;
   day: number;
@@ -12,4 +14,13 @@ export type EventType = {
 export type EventDateType = {
   month: string;
   day: number;
+};
+
+export type EventRecordType = {
+  date: Timestamp;
+  name: string;
+  location: string;
+  description?: string;
+  imageUri?: string;
+  gmapsLink?: string;
 };
