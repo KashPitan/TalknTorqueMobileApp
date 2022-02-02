@@ -128,7 +128,8 @@ const CreateEventScreen = () => {
       //   date: formState.initialDate.toUTCString(),
       date: stamp,
     };
-    const docRef = await addDoc(collection(db, "test-events"), newEventDoc);
+    // const docRef = await addDoc(collection(db, "test-events"), newEventDoc);
+    const docRef = await addDoc(collection(db, "events"), newEventDoc);
 
     setIsSubmittingForm(false);
   };
@@ -221,7 +222,22 @@ const CreateEventScreen = () => {
               Location
             </FormControl.Label>
             <Input
-              placeholder="Google maps location link"
+              placeholder="Location not set"
+              placeholderTextColor="gray.400"
+              onChangeText={(location) =>
+                setFormState({ ...formState, location })
+              }
+              size="lg"
+              color="black"
+            />
+          </FormControl>
+
+          <FormControl>
+            <FormControl.Label _text={{ bold: true }}>
+              Google Maps Link
+            </FormControl.Label>
+            <Input
+              placeholder="Google maps location link not set"
               placeholderTextColor="gray.400"
               onChangeText={(gmapsLink) =>
                 setFormState({ ...formState, gmapsLink })
