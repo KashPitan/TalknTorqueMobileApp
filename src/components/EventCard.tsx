@@ -10,13 +10,17 @@ const EventCard: FC<{ event: EventType }> = ({ event }): JSX.Element => {
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    (async () => {
-      const firebaseDownloadUrl = await getDownloadURL(
-        firebaseStorageReference
-      );
-      setDownloadUrl(firebaseDownloadUrl);
-      // console.log(firebaseDownloadUrl);
-    })();
+    // if the uri string contains this its a storage location reference
+    // so we need to get the download url from it
+    // if not it should already be a download url
+    if (event.imageUri?.includes("talktorque")) {
+      (async () => {
+        const firebaseDownloadUrl = await getDownloadURL(
+          firebaseStorageReference
+        );
+        setDownloadUrl(firebaseDownloadUrl);
+      })();
+    }
   }, []);
   return (
     <Box w="90%" h="67%">
@@ -75,7 +79,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: 300,
-    // justifyContent: "start",
   },
   text: {
     color: "white",
