@@ -10,8 +10,11 @@ import {
 import React from "react";
 import { StyleSheet } from "react-native";
 import tandtlogo from "../../images/T&T2022LogoCropped.png";
+import { useNavigation } from "@react-navigation/native";
 
 const Header = () => {
+  const navigation = useNavigation();
+
   return (
     <>
       <Box bgColor="red.500" p="4" pb="1">
@@ -30,7 +33,11 @@ const Header = () => {
               );
             }}
           >
-            <Menu.Item>SF Pro</Menu.Item>
+            <Menu.Item
+              onPress={() => navigation.navigate("Create Event Screen")}
+            >
+              create event
+            </Menu.Item>
             <Menu.Item>Helvetica</Menu.Item>
             <Menu.Item>Cookie</Menu.Item>
           </Menu>
