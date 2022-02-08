@@ -1,4 +1,4 @@
-import { LogBox, StyleSheet } from "react-native";
+import { LogBox, StyleSheet, SafeAreaView } from "react-native";
 import { NativeBaseProvider } from "native-base";
 import React from "react";
 
@@ -6,10 +6,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import HomeScreen from "./src/screens/HomeScreen";
-
 import RegisterScreen from "./src/screens/RegisterScreen";
 import SignInScreen from "./src/screens/SignInScreen";
 import EventScreen from "./src/screens/EventScreen";
+import CreateEventScreen from "./src/screens/CreateEventScreen";
 
 //for luxon intl error
 import "intl";
@@ -38,11 +38,15 @@ export default function App() {
     <NativeBaseProvider config={config}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Event Screen"
+          initialRouteName="SignIn Screen"
           screenOptions={{
             headerShown: false,
           }}
         >
+          <Stack.Screen
+            name="Create Event Screen"
+            component={CreateEventScreen}
+          />
           <Stack.Screen name="Event Screen" component={EventScreen} />
           <Stack.Screen name="Home Screen" component={HomeScreen} />
           <Stack.Screen name="Register Screen" component={RegisterScreen} />
