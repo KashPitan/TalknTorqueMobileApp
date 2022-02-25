@@ -10,6 +10,7 @@ import {
   IconButton,
   Link,
   Button,
+  Checkbox,
 } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 
@@ -20,17 +21,27 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { EventType } from "../../types";
 import TTPic from "../../assets/images/TTPic.png";
-import Header from "../components/Header";
+import AttendanceList from "../components/AttendanceList";
 
-import { storage } from "../../firebase";
+import { storage, db } from "../../firebase";
+import { auth } from "../../firebase";
 import { getDownloadURL, ref } from "firebase/storage";
+import {
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  onSnapshot,
+} from "firebase/firestore";
 
 const dummyEvent: EventType = {
+  id: "test",
   name: "VROOOOOOM",
   location: "London, that place",
   month: "Jan",
   day: 3,
   description: "Heeheeheeee Hahahahahahaha",
+  attendance: [],
 };
 
 const EventScreen = ({ route, children }): JSX.Element => {
@@ -41,14 +52,59 @@ const EventScreen = ({ route, children }): JSX.Element => {
   const firebaseStorageReference = ref(storage, imageUri);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
 
+  const [attendanceList, setAttendanceList] = useState([]);
+  const [isAttending, setIsAttending] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
   useEffect(() => {
+    console.log(event.attendance);
     (async () => {
       const firebaseDownloadUrl = await getDownloadURL(
         firebaseStorageReference
       );
       setDownloadUrl(firebaseDownloadUrl);
     })();
+
+    const eventAttendanceListListener = onSnapshot(
+      doc(db, "events", event.id),
+      (doc) => {
+        console.log("Current data: ", doc.data());
+
+        let docData = doc.data();
+        if (docData) setAttendanceList(docData.attendance);
+      }
+    );
+
+    return () => {
+      // close attendance list listener when navigation from page
+      eventAttendanceListListener();
+    };
   }, []);
+
+  const onChangeCheckbox = async () => {
+    setIsAttending(!isAttending);
+  };
+
+  const onConfirmButtonHandler = async () => {
+    setIsSubmitting(true);
+    const eventRef = doc(db, "events", event.id);
+
+    // set up watch function for event attendance list
+    // tabs for attendance
+    const currentUserDisplayName = auth.currentUser?.displayName;
+    try {
+      // update attendance array: remove user is submitting attending: false and vice versa
+      await updateDoc(eventRef, {
+        attendance: isAttending
+          ? arrayUnion(currentUserDisplayName)
+          : arrayRemove(currentUserDisplayName),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    setIsSubmitting(false);
+  };
 
   return (
     <>
@@ -102,7 +158,6 @@ const EventScreen = ({ route, children }): JSX.Element => {
                 {event && event.name}
                 {!event && "VROOOOOOOM"}
               </Text>
-
               <HStack mt="2" ml="1">
                 <Icon
                   as={MaterialCommunityIcons}
@@ -117,7 +172,6 @@ const EventScreen = ({ route, children }): JSX.Element => {
                   {event.fullDate}
                 </Text>
               </HStack>
-
               <HStack>
                 <Icon
                   as={MaterialCommunityIcons}
@@ -131,7 +185,6 @@ const EventScreen = ({ route, children }): JSX.Element => {
                   {event && event.location}
                 </Text>
               </HStack>
-
               {event.gmapsLink && (
                 <Center>
                   <Link href={event.gmapsLink}>
@@ -143,9 +196,34 @@ const EventScreen = ({ route, children }): JSX.Element => {
                   </Link>
                 </Center>
               )}
-
               <Text mt="5" white-space="pre-line">
                 {event.description}
+              </Text>
+              checkbox with update button for attendance
+              <Text bold fontSize="xl">
+                Attendance
+              </Text>
+              <Text bold fontSize="md">
+                are you coming?
+              </Text>
+              <HStack mt="3">
+                <Checkbox
+                  isChecked={isAttending}
+                  onChange={onChangeCheckbox}
+                  colorScheme="green"
+                />
+                <Button
+                  onPress={onConfirmButtonHandler}
+                  isLoading={isSubmitting}
+                  alignSelf={"flex-end"}
+                  ml="6"
+                >
+                  Confirm
+                </Button>
+              </HStack>
+              <Text bold fontSize="xl">
+                Attendance List
+                <AttendanceList attendanceList={attendanceList} />
               </Text>
             </Box>
           </Box>

@@ -25,6 +25,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage, db } from "../../firebase";
 
 import { EventRecordType } from "../../types";
+import Event from "../classes/Event";
 
 const CreateEventScreen = () => {
   const [formState, setFormState] = useState({
@@ -125,11 +126,10 @@ const CreateEventScreen = () => {
       location: formState.location,
       gmapsLink: formState.gmapsLink,
       imageUri: eventImageDownloadUrl,
-      //   date: formState.initialDate.toUTCString(),
       date: stamp,
     };
-    // const docRef = await addDoc(collection(db, "test-events"), newEventDoc);
-    const docRef = await addDoc(collection(db, "events"), newEventDoc);
+
+    await Event.uploadEvent(newEventDoc);
 
     setIsSubmittingForm(false);
   };
