@@ -3,11 +3,13 @@ import { StyleSheet } from "react-native";
 import { Input, Center, Button, Box, Text } from "native-base";
 import React from "react";
 
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "../../firebase";
 
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [loading, setLoading] = useState(false);
 
   const buttonWidth = "85%";
@@ -16,19 +18,24 @@ const RegisterScreen = () => {
 
   const handleRegister = async () => {
     setLoading(true);
-    const auth = getAuth();
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      const user = userCredential.user;
+
+      if (userCredential.user) {
+        const res = await updateProfile(userCredential.user, {
+          displayName: displayName,
+        });
+      }
+      setLoading(false);
+      alert("Account succesfully created!");
+      navigation.navigate("Home Screen");
     } catch (error) {
       setLoading(false);
       console.log(error);
-      const errorCode = error.code;
-      const errorMessage = error.message;
     }
   };
 
@@ -52,7 +59,7 @@ const RegisterScreen = () => {
         <Input
           m="3"
           mt="10"
-          placeholder="enter an email address"
+          placeholder="enter your email address"
           placeholderTextColor="white"
           onChangeText={(email) => setEmail(email)}
           size="lg"
@@ -60,6 +67,16 @@ const RegisterScreen = () => {
         />
 
         <Input
+          mb="3"
+          placeholder="enter your name"
+          placeholderTextColor="white"
+          onChangeText={(displayName) => setDisplayName(displayName)}
+          size="lg"
+          w={inputFieldWidth}
+        />
+
+        <Input
+          type="password"
           placeholder="enter a password"
           placeholderTextColor="white"
           onChangeText={(password) => setPassword(password)}
