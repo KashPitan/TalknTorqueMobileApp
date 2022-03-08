@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { StyleSheet } from "react-native";
-import { Input, Center, Button, Box, Text } from "native-base";
+import { Input, Center, Button, Box, Text, useToast } from "native-base";
 import React from "react";
 
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../firebase";
 
 const RegisterScreen = ({ navigation }) => {
+  const toast = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -31,7 +32,7 @@ const RegisterScreen = ({ navigation }) => {
         });
       }
       setLoading(false);
-      alert("Account succesfully created!");
+      toast.show({ description: "Account succesfully created!" });
       navigation.navigate("Home Screen");
     } catch (error) {
       setLoading(false);
