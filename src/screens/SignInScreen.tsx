@@ -10,6 +10,8 @@ import React from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 const SignInScreen = ({ navigation }) => {
+  const toast = useToast();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,19 +20,25 @@ const SignInScreen = ({ navigation }) => {
   const buttonHeight = "16";
   const inputFieldWidth = "85%";
 
+  useEffect(() => {
+    setLoading(false);
+    setPassword("");
+    setEmail("");
+  }, []);
+
   const handleSignIn = async () => {
     setLoading(true);
     Keyboard.dismiss();
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
+      await signInWithEmailAndPassword(auth, email, password);
+      setLoading(false);
+
+      toast.show({ description: "Successfully Logged In! :)" });
       navigation.navigate("Home Screen");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
+      // console.log(error?.message);
+      console.log(error.code);
       setLoading(false);
     }
   };
