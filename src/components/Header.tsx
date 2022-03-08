@@ -6,16 +6,43 @@ import {
   Image,
   Box,
   Divider,
+  Text,
+  Button,
+  useToast,
+  Modal,
+  FormControl,
 } from "native-base";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
+
 import tandtlogo from "../../images/T&T2022LogoCropped.png";
+
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase";
+
 import { useNavigation } from "@react-navigation/native";
 import { checkIsAdmin } from "../helper/checkIsAdmin";
 
 const Header = () => {
   const navigation = useNavigation();
+  const toast = useToast();
+
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      toast.show({
+        description: "logged out",
+      });
+
+      navigation.navigate("SignIn Screen");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     (async () => {
       const adminCheck = await checkIsAdmin();
@@ -51,12 +78,37 @@ const Header = () => {
 
             <Menu.Item>Helvetica</Menu.Item>
             <Menu.Item>Cookie</Menu.Item>
+            <Menu.Item onPress={() => setShowModal(true)}>Sign Out</Menu.Item>
           </Menu>
 
           <Image source={tandtlogo} alt="T&T" size="xs" width="80%" ml="2" />
         </HStack>
       </Box>
       <Divider bg="red.400" />
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <Modal.Content maxWidth="400px">
+          <Modal.CloseButton />
+          <Modal.Header>Log Out</Modal.Header>
+          <Modal.Body>
+            <FormControl>
+              <Text>Are you sure you want to log out?</Text>
+            </FormControl>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button.Group space={2}>
+              <Button onPress={() => handleSignOut()}>Yes</Button>
+              <Button
+                colorScheme="blueGray"
+                onPress={() => {
+                  setShowModal(false);
+                }}
+              >
+                No
+              </Button>
+            </Button.Group>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
     </>
   );
 };
