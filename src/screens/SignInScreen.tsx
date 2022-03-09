@@ -123,7 +123,7 @@ const SignInScreen = ({ navigation }) => {
               setError(null);
             }}
             size="lg"
-            color="white"
+            color="black"
             bgColor="gray.100"
             w={inputFieldWidth}
             onFocus={signInFormOnFocusHandler}
