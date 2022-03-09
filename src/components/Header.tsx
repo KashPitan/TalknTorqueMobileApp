@@ -11,6 +11,7 @@ import {
   useToast,
   Modal,
   FormControl,
+  Link,
 } from "native-base";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
@@ -72,13 +73,18 @@ const Header = () => {
               <Menu.Item
                 onPress={() => navigation.navigate("Create Event Screen")}
               >
-                create event
+                Create Event
               </Menu.Item>
             )}
 
-            <Menu.Item>Helvetica</Menu.Item>
-            <Menu.Item>Cookie</Menu.Item>
+            {/* <Menu.Item>Helvetica</Menu.Item> */}
+            {/* <Menu.Item>Cookie</Menu.Item> */}
             <Menu.Item onPress={() => setShowModal(true)}>Sign Out</Menu.Item>
+            <Menu.Item>
+              <Link href="https://www.instagram.com/talkandtorque/">
+                <Text underline={false}>Instagram Page</Text>
+              </Link>
+            </Menu.Item>
           </Menu>
 
           <Image source={tandtlogo} alt="T&T" size="xs" width="80%" ml="2" />
