@@ -33,10 +33,17 @@ const RegisterScreen = ({ navigation }) => {
   const inputFieldWidth = "85%";
 
   const handleRegister = async () => {
-    validatePassword();
-    validateEmail();
-    validateName();
-    checkFormFilledOut();
+    const isFormComplete = checkFormFilledOut();
+    if (!isFormComplete) return;
+
+    const isEmailValid = validateEmail();
+    if (!isEmailValid) return;
+
+    const isNameValid = validateName();
+    if (!isNameValid) return;
+
+    const isPasswordValid = validatePassword();
+    if (!isPasswordValid) return;
 
     if (error) return;
 
@@ -64,19 +71,37 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   const checkFormFilledOut = () => {
-    if (!displayName) setError("You must enter a name");
-    if (!password) setError("You must enter a password");
-    if (!email) setError("You must enter an email");
+    if (!displayName) {
+      setError("You must enter a name");
+      return false;
+    }
+    if (!password) {
+      setError("You must enter a password");
+      return false;
+    }
+    if (!email) {
+      setError("You must enter an email");
+      return false;
+    }
+    return true;
   };
 
   const validateName = () => {
     const isValid = validator.isAlpha(displayName);
-    if (!isValid) setError("Name must only contain letters");
+    if (!isValid) {
+      setError("Name must only contain letters");
+      return false;
+    }
+    return true;
   };
 
   const validateEmail = () => {
     const isValid = validator.isEmail(email);
-    if (!isValid) setError("Email is not valid");
+    if (!isValid) {
+      setError("Email is not valid");
+      return false;
+    }
+    return true;
   };
 
   const validatePassword = () => {
@@ -85,9 +110,14 @@ const RegisterScreen = ({ navigation }) => {
       minLowercase: 1,
       minUppercase: 1,
       minNumbers: 1,
+      minSymbols: 1,
     });
-    if (!isValid) setError("Password is not strong enough");
-    console.log(isValid);
+    if (!isValid) {
+      setError("Password is not strong enough");
+      console.log(password);
+      return false;
+    }
+    return true;
   };
 
   return (
