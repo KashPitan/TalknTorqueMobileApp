@@ -52,7 +52,7 @@ const EventScreen = ({ route, children }): JSX.Element => {
   const firebaseStorageReference = ref(storage, imageUri);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
 
-  const [attendanceList, setAttendanceList] = useState([]);
+  const [attendanceList, setAttendanceList] = useState<string[]>([]);
   const [isAttending, setIsAttending] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -71,15 +71,38 @@ const EventScreen = ({ route, children }): JSX.Element => {
         console.log("Current data: ", doc.data());
 
         let docData = doc.data();
-        if (docData) setAttendanceList(docData.attendance);
+        if (docData) {
+          const currentUserDisplayName = auth.currentUser?.displayName;
+          const attendanceListFromDocument = docData.attendance;
+          if (attendanceListFromDocument.includes(currentUserDisplayName)) {
+            attendanceListFromDocument.filter(
+              (item) => item !== currentUserDisplayName
+            );
+            attendanceListFromDocument.unshift(currentUserDisplayName);
+            setAttendanceList(attendanceListFromDocument);
+          } else {
+            setAttendanceList(attendanceListFromDocument);
+          }
+        }
       }
     );
+    const currentUserEmail = auth.currentUser?.email;
 
     return () => {
       // close attendance list listener when navigation from page
       eventAttendanceListListener();
     };
   }, []);
+
+  useEffect(() => {
+    // set the attendance status of the current user based on the event attendance information
+    const currentUserDisplayName = auth.currentUser?.displayName;
+    if (currentUserDisplayName) {
+      setIsAttending(attendanceList.includes(currentUserDisplayName));
+    } else {
+      setIsAttending(false);
+    }
+  }, [attendanceList]);
 
   const onChangeCheckbox = async () => {
     setIsAttending(!isAttending);
@@ -196,35 +219,39 @@ const EventScreen = ({ route, children }): JSX.Element => {
                   </Link>
                 </Center>
               )}
-              <Text mt="5" white-space="pre-line">
+              <Text mt="5" bold fontSize="md">
+                Event Description:
+              </Text>
+              <Text mt="2" white-space="pre-line">
                 {event.description}
               </Text>
-              checkbox with update button for attendance
-              <Text bold fontSize="xl">
+              <Text bold fontSize="xl" mt="5">
                 Attendance
               </Text>
-              <Text bold fontSize="md">
-                are you coming?
-              </Text>
-              <HStack mt="3">
+
+              <HStack my="2">
                 <Checkbox
                   isChecked={isAttending}
                   onChange={onChangeCheckbox}
                   colorScheme="green"
+                  value="one"
                 />
-                <Button
-                  onPress={onConfirmButtonHandler}
-                  isLoading={isSubmitting}
-                  alignSelf={"flex-end"}
-                  ml="6"
-                >
-                  Confirm
-                </Button>
+                <Text bold fontSize="md" ml="2">
+                  Are you coming?
+                </Text>
               </HStack>
+              <Button
+                onPress={onConfirmButtonHandler}
+                isLoading={isSubmitting}
+                alignSelf={"flex-start"}
+                my="2"
+              >
+                {isAttending ? "Mark as attending" : "Mark as NOT attending"}
+              </Button>
               <Text bold fontSize="xl">
                 Attendance List
-                <AttendanceList attendanceList={attendanceList} />
               </Text>
+              <AttendanceList attendanceList={attendanceList} />
             </Box>
           </Box>
         </ScrollView>
