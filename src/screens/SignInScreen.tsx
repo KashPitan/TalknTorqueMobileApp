@@ -9,20 +9,20 @@ import {
   Input,
   Center,
   Button,
-  Box,
-  Image,
   Text,
   useToast,
   FormControl,
   Icon,
+  IconButton,
+  View,
 } from "native-base";
 import { auth } from "../../firebase";
 import { TTLOGO } from "../../assets/index";
 import tandtlogo from "../../images/T&T2022Logo.png";
 import TTBackground from "../../assets/images/TTLoginBackground.png";
+import InstagramButton from "../components/InstagramButton";
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { BlurView } from "expo-blur";
 
 // const logo = require("../../images/T&T2022Logo.png");
 
@@ -179,14 +179,17 @@ const SignInScreen = ({ navigation }) => {
             h={buttonHeight}
             my="3"
             bg="white"
-            // borderWidth={1}
-            // borderColor="black"
             style={styles.dropShadow}
             onPress={() => navigation.navigate("Register Screen")}
           >
             Register
           </Button>
         </FormControl>
+
+        <View flexDirection="row" alignSelf="flex-start" w="full">
+          <InstagramButton />
+          <View flexDirection="column" alignSelf="flex-end" h="full"></View>
+        </View>
       </Center>
     </ImageBackground>
   );
