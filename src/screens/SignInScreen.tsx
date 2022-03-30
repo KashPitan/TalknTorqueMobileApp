@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Keyboard,
@@ -16,17 +16,15 @@ import {
   IconButton,
   View,
 } from "native-base";
+import validator from "validator";
+
 import { auth } from "../../firebase";
-import { TTLOGO } from "../../assets/index";
-import tandtlogo from "../../images/T&T2022Logo.png";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
 import TTBackground from "../../assets/images/TTLoginBackground.png";
-import InstagramButton from "../components/InstagramButton";
-import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-// const logo = require("../../images/T&T2022Logo.png");
-
-import { signInWithEmailAndPassword } from "firebase/auth";
+import InstagramButton from "../components/InstagramButton";
 
 const SignInScreen = ({ navigation }) => {
   const toast = useToast();
@@ -49,9 +47,16 @@ const SignInScreen = ({ navigation }) => {
   }, []);
 
   const handleSignIn = async () => {
-    setLoading(true);
+    const isFormComplete = checkFormFilledOut();
+    if (!isFormComplete) return;
+
     Keyboard.dismiss();
+
+    if (error) return;
+
     try {
+      setLoading(true);
+
       await signInWithEmailAndPassword(auth, email, password);
       setLoading(false);
 
@@ -61,11 +66,37 @@ const SignInScreen = ({ navigation }) => {
       // console.log(error);
       // console.log(error?.message);
       console.log(error.code);
-      if (error.code === "auth/invalid-email") {
-        setError("Incorrect login details");
+
+      switch (error.code) {
+        case "auth/invalid-email":
+          setError("Incorrect login details");
+          break;
+        case "auth/wrong-password":
+          setError("Incorrect login details");
+          break;
+        case "auth/too-many-requests":
+          setError("Incorrect login details");
+          break;
+        default:
+          break;
       }
+
       setLoading(false);
     }
+  };
+
+  const checkFormFilledOut = () => {
+    if (!email) {
+      setError("You must enter an email");
+      return false;
+    }
+
+    if (!password) {
+      setError("You must enter a password");
+      return false;
+    }
+
+    return true;
   };
 
   const signInFormOnFocusHandler = () => {
