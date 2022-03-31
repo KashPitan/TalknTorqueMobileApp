@@ -14,7 +14,7 @@ import {
   Link,
 } from "native-base";
 import React, { useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, StatusBar } from "react-native";
 
 import tandtlogo from "../../images/T&T2022LogoCropped.png";
 
@@ -54,6 +54,7 @@ const Header = () => {
   return (
     <>
       <Box bgColor="red.500" p="4" pb="1">
+        <StatusBar animated={true} showHideTransition={"slide"} hidden={true} />
         <HStack marginTop="6">
           <Menu
             w="190"

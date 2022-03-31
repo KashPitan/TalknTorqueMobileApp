@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { StyleSheet, ImageBackground, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  ImageBackground,
+  Dimensions,
+  StatusBar,
+} from "react-native";
 import {
   Input,
   Center,
@@ -121,141 +126,145 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   return (
-    <ImageBackground
-      source={TTBackground}
-      resizeMode="stretch"
-      style={styles.backgroundImage}
-      blurRadius={20}
-    >
-      <Center padding="8" w="full" h="full" ml="3.5">
-        <FormControl w="full" isInvalid={error}>
-          <Text fontSize="3xl" color="black" bold>
-            Create New Account
-          </Text>
-          <FormControl.Label>
-            <Text bold color="black">
-              Email
-            </Text>
-          </FormControl.Label>
-          <Input
-            mb="4"
-            placeholder="enter your email address"
-            placeholderTextColor="gray.400"
-            color="black"
-            bgColor="gray.100"
-            onChangeText={(email) => {
-              setEmail(email);
-              setError(null);
-            }}
-            size="lg"
-            w={inputFieldWidth}
-            shadow={5}
-            InputLeftElement={
-              <Icon
-                as={<MaterialCommunityIcons name="email" />}
-                size={5}
-                ml="2"
-                color="muted.400"
-              />
-            }
-          />
+    <>
+      <StatusBar animated={true} showHideTransition={"slide"} hidden={true} />
 
-          <FormControl.Label>
-            <Text bold color="black">
-              Name
+      <ImageBackground
+        source={TTBackground}
+        resizeMode="stretch"
+        style={styles.backgroundImage}
+        blurRadius={20}
+      >
+        <Center padding="8" w="full" h="full" ml="3.5">
+          <FormControl w="full" isInvalid={error}>
+            <Text fontSize="3xl" color="black" bold>
+              Create New Account
             </Text>
-          </FormControl.Label>
-          <Input
-            mb="4"
-            placeholder="enter your name"
-            placeholderTextColor="gray.400"
-            color="black"
-            bgColor="gray.100"
-            onChangeText={(displayName) => {
-              setDisplayName(displayName);
-              setError(null);
-            }}
-            size="lg"
-            w={inputFieldWidth}
-            shadow={5}
-            InputLeftElement={
-              <Icon
-                as={<MaterialCommunityIcons name="account" />}
-                size={5}
-                ml="2"
-                color="muted.400"
-              />
-            }
-          />
+            <FormControl.Label>
+              <Text bold color="black">
+                Email
+              </Text>
+            </FormControl.Label>
+            <Input
+              mb="4"
+              placeholder="enter your email address"
+              placeholderTextColor="gray.400"
+              color="black"
+              bgColor="gray.100"
+              onChangeText={(email) => {
+                setEmail(email);
+                setError(null);
+              }}
+              size="lg"
+              w={inputFieldWidth}
+              shadow={5}
+              InputLeftElement={
+                <Icon
+                  as={<MaterialCommunityIcons name="email" />}
+                  size={5}
+                  ml="2"
+                  color="muted.400"
+                />
+              }
+            />
 
-          <FormControl.Label>
-            <Text bold color="black">
-              Password
-            </Text>
-          </FormControl.Label>
-          <Input
-            type="password"
-            placeholder="enter a password"
-            placeholderTextColor="gray.400"
-            color="black"
-            bgColor="gray.100"
-            onChangeText={(password) => {
-              setPassword(password);
-              setError(null);
-            }}
-            size="lg"
-            w={inputFieldWidth}
-            shadow={5}
-            InputLeftElement={
-              <Icon
-                as={<MaterialCommunityIcons name="lock" />}
-                size={5}
-                ml="2"
-                color="muted.400"
-              />
-            }
-          />
-          <FormControl.ErrorMessage
-            leftIcon={
-              <Icon
-                as={<MaterialCommunityIcons name="alert-circle" />}
-                size={5}
-              />
-            }
-          >
-            <Text bold color="red.600">
-              {error}
-            </Text>
-          </FormControl.ErrorMessage>
-          {loading ? (
-            <Button
-              w={buttonWidth}
-              h={buttonHeight}
-              my="10"
-              bg="white"
+            <FormControl.Label>
+              <Text bold color="black">
+                Name
+              </Text>
+            </FormControl.Label>
+            <Input
+              mb="4"
+              placeholder="enter your name"
+              placeholderTextColor="gray.400"
+              color="black"
+              bgColor="gray.100"
+              onChangeText={(displayName) => {
+                setDisplayName(displayName);
+                setError(null);
+              }}
               size="lg"
-              onPress={() => handleRegister()}
-              isLoading
-              isLoadingText="Registering"
-            >
-              Register
-            </Button>
-          ) : (
-            <Button
-              w={buttonWidth}
-              h={buttonHeight}
-              my="10"
-              bg="white"
+              w={inputFieldWidth}
+              shadow={5}
+              InputLeftElement={
+                <Icon
+                  as={<MaterialCommunityIcons name="account" />}
+                  size={5}
+                  ml="2"
+                  color="muted.400"
+                />
+              }
+            />
+
+            <FormControl.Label>
+              <Text bold color="black">
+                Password
+              </Text>
+            </FormControl.Label>
+            <Input
+              type="password"
+              placeholder="enter a password"
+              placeholderTextColor="gray.400"
+              color="black"
+              bgColor="gray.100"
+              onChangeText={(password) => {
+                setPassword(password);
+                setError(null);
+              }}
               size="lg"
-              style={styles.dropShadow}
-              onPress={() => handleRegister()}
+              w={inputFieldWidth}
+              shadow={5}
+              InputLeftElement={
+                <Icon
+                  as={<MaterialCommunityIcons name="lock" />}
+                  size={5}
+                  ml="2"
+                  color="muted.400"
+                />
+              }
+            />
+            <FormControl.ErrorMessage
+              leftIcon={
+                <Icon
+                  as={<MaterialCommunityIcons name="alert-circle" />}
+                  size={5}
+                />
+              }
             >
-              Register
-            </Button>
-          )}
-        </FormControl>
-      </Center>
-    </ImageBackground>
+              <Text bold color="red.600">
+                {error}
+              </Text>
+            </FormControl.ErrorMessage>
+            {loading ? (
+              <Button
+                w={buttonWidth}
+                h={buttonHeight}
+                my="10"
+                bg="white"
+                size="lg"
+                onPress={() => handleRegister()}
+                isLoading
+                isLoadingText="Registering"
+              >
+                Register
+              </Button>
+            ) : (
+              <Button
+                w={buttonWidth}
+                h={buttonHeight}
+                my="10"
+                bg="white"
+                size="lg"
+                style={styles.dropShadow}
+                onPress={() => handleRegister()}
+              >
+                Register
+              </Button>
+            )}
+          </FormControl>
+        </Center>
+      </ImageBackground>
+    </>
   );
 };
 
