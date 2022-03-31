@@ -100,10 +100,6 @@ const SignInScreen = ({ navigation }) => {
     return true;
   };
 
-  const signInFormOnFocusHandler = () => {
-    setformIsFocused(true);
-  };
-
   return (
     <>
       <StatusBar animated={true} showHideTransition={"slide"} hidden={true} />
@@ -111,7 +107,7 @@ const SignInScreen = ({ navigation }) => {
         source={TTBackground}
         resizeMode="stretch"
         style={styles.backgroundImage}
-        blurRadius={formIsFocused ? 20 : 0}
+        blurRadius={20}
       >
         <Center padding="8" w="full" h="full" ml="3.5">
           <FormControl w="full" isInvalid={error}>
@@ -132,7 +128,6 @@ const SignInScreen = ({ navigation }) => {
               color="black"
               bgColor="gray.100"
               w={inputFieldWidth}
-              onFocus={signInFormOnFocusHandler}
               shadow={5}
               InputLeftElement={
                 <Icon
@@ -160,7 +155,6 @@ const SignInScreen = ({ navigation }) => {
               color="black"
               bgColor="gray.100"
               w={inputFieldWidth}
-              onFocus={signInFormOnFocusHandler}
               shadow={5}
               InputLeftElement={
                 <Icon
