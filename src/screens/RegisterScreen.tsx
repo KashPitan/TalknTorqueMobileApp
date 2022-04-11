@@ -30,6 +30,8 @@ const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
+  const [car, setCar] = useState("");
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<null | string>(null);
 
@@ -189,6 +191,33 @@ const RegisterScreen = ({ navigation }) => {
               InputLeftElement={
                 <Icon
                   as={<MaterialCommunityIcons name="account" />}
+                  size={5}
+                  ml="2"
+                  color="muted.400"
+                />
+              }
+            />
+            <FormControl.Label>
+              <Text bold color="black">
+                Car
+              </Text>
+            </FormControl.Label>
+            <Input
+              mb="4"
+              placeholder="enter your car"
+              placeholderTextColor="gray.400"
+              color="black"
+              bgColor="gray.100"
+              onChangeText={(car) => {
+                setCar(car);
+                setError(null);
+              }}
+              size="lg"
+              w={inputFieldWidth}
+              shadow={5}
+              InputLeftElement={
+                <Icon
+                  as={<MaterialCommunityIcons name="car" />}
                   size={5}
                   ml="2"
                   color="muted.400"
