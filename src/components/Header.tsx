@@ -45,11 +45,21 @@ const Header = () => {
   };
 
   useEffect(() => {
-    (async () => {
-      const adminCheck = await checkIsAdmin();
-      console.log(adminCheck);
-      setIsAdmin(adminCheck);
-    })();
+    // check the users admin status when their user data is available
+    const authListener = auth.onAuthStateChanged((user) => {
+      if (user) {
+        (async () => {
+          const adminCheck = await checkIsAdmin();
+          console.log("is admin?: ", adminCheck);
+          setIsAdmin(adminCheck);
+        })();
+      }
+    });
+
+    return () => {
+      // close auth listener
+      authListener();
+    };
   }, []);
   return (
     <>
@@ -78,8 +88,6 @@ const Header = () => {
               </Menu.Item>
             )}
 
-            {/* <Menu.Item>Helvetica</Menu.Item> */}
-            {/* <Menu.Item>Cookie</Menu.Item> */}
             <Menu.Item onPress={() => setShowModal(true)}>Sign Out</Menu.Item>
             <Menu.Item>
               <Link href="https://www.instagram.com/talkandtorque/">
