@@ -7,6 +7,7 @@ import {
   query,
   where,
   addDoc,
+  FieldValue,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { EventRecordType } from "../../types";
@@ -17,6 +18,7 @@ export default class Event implements EventType {
   name: string;
   location: string;
   attendance: string[];
+  createdAt: FieldValue;
   description?: string;
   imageUri?: string;
   fullDate?: string;
@@ -30,6 +32,7 @@ export default class Event implements EventType {
     location: string,
     id: string,
     attendance: string[],
+    createdAt: FieldValue,
     description?: string,
     imageUri?: string,
     fullDate?: string,
@@ -45,6 +48,7 @@ export default class Event implements EventType {
     this.gmapsLink = gmapsLink;
     this.id = id;
     this.attendance = attendance;
+    this.createdAt = createdAt;
   }
 
   getRefById = async () => {};
@@ -83,6 +87,7 @@ export default class Event implements EventType {
           gmapsLink: docData.gmapsLink,
           id: doc.id,
           attendance: docData.attendance,
+          createdAt: docData.createdAt,
         };
 
         eventData.push(event);
