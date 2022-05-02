@@ -19,7 +19,12 @@ import { DateTime as Luxon } from "luxon";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import ImagePicker from "../components/ImagePicker";
 
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  Timestamp,
+  serverTimestamp,
+} from "firebase/firestore";
 
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage, db } from "../../firebase";
@@ -77,7 +82,7 @@ const CreateEventScreen = () => {
         year: formattedDate.year,
       });
     } else if (mode === "time") {
-      console.log(formattedDate.toFormat("HH:mm:ss"));
+      // console.log(formattedDate.toFormat("HH:mm:ss"));
 
       setFormState({
         ...formState,
@@ -126,7 +131,9 @@ const CreateEventScreen = () => {
       location: formState.location,
       gmapsLink: formState.gmapsLink,
       imageUri: eventImageDownloadUrl,
+      attendance: [],
       date: stamp,
+      createdAt: serverTimestamp(),
     };
 
     await Event.uploadEvent(newEventDoc);
@@ -155,7 +162,7 @@ const CreateEventScreen = () => {
   const validate = () => {
     if (formState.name === "") {
       setErrors("Event name is required");
-      console.log("hi");
+      // console.log("hi");
       return false;
     }
 

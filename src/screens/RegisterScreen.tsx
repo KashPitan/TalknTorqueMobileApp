@@ -17,6 +17,8 @@ import {
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+import User from "../classes/User";
+
 import validator from "validator";
 
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
@@ -67,10 +69,27 @@ const RegisterScreen = ({ navigation }) => {
         const res = await updateProfile(userCredential.user, {
           displayName: displayName,
         });
+
+        const userUId = userCredential.user.uid;
+
+        const newUser = new User(userUId, email, displayName, car, false);
+
+        console.log(newUser);
+
+        // add user to the database when registered
+        newUser.create();
+
+        const isUserApproved = await User.isApproved(userUId);
+
+        if (isUserApproved) {
+          toast.show({ description: "Account succesfully created!" });
+          navigation.navigate("Home Screen");
+        } else {
+          toast.show({ description: "Pending approval" });
+          navigation.navigate("Approval Screen");
+        }
       }
       setLoading(false);
-      toast.show({ description: "Account succesfully created!" });
-      navigation.navigate("Home Screen");
     } catch (error) {
       setLoading(false);
       console.log(error);

@@ -19,6 +19,8 @@ import {
 } from "native-base";
 import validator from "validator";
 
+import User from "../classes/User";
+
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
@@ -35,8 +37,6 @@ const SignInScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<null | string>(null);
 
-  const [formIsFocused, setformIsFocused] = useState<boolean>(false);
-
   const buttonWidth = "85%";
   const buttonHeight = "16";
   const inputFieldWidth = "85%";
@@ -48,21 +48,28 @@ const SignInScreen = ({ navigation }) => {
   }, []);
 
   const handleSignIn = async () => {
+    Keyboard.dismiss();
+
     const isFormComplete = checkFormFilledOut();
     if (!isFormComplete) return;
-
-    Keyboard.dismiss();
 
     if (error) return;
 
     try {
       setLoading(true);
 
-      await signInWithEmailAndPassword(auth, email, password);
+      const user = await signInWithEmailAndPassword(auth, email, password);
       setLoading(false);
 
-      toast.show({ description: "Successfully Logged In! :)" });
-      navigation.navigate("Home Screen");
+      const isUserApproved = await User.isApproved(user.user.uid);
+
+      if (isUserApproved) {
+        toast.show({ description: "Successfully Logged In! :)" });
+        navigation.navigate("Home Screen");
+      } else {
+        toast.show({ description: "Pending approval" });
+        navigation.navigate("Approval Screen");
+      }
     } catch (error) {
       // console.log(error);
       // console.log(error?.message);
