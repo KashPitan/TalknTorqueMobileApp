@@ -1,13 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import {
-  Actionsheet,
-  Box,
-  HStack,
-  VStack,
-  Text,
-  Center,
-  Button,
-} from "native-base";
+import { Box, HStack, VStack, Text, Center, Button } from "native-base";
 import React, { FC } from "react";
 import { StyleSheet } from "react-native";
 import { EventType } from "../../types";
@@ -53,13 +45,7 @@ const UpcomingEventItem: FC<{ event: EventType }> = ({
           </Center>
         </Box>
         <Center w="74%" ml="2">
-          <Text
-            underline
-            alignSelf="flex-start"
-            bold
-            fontSize="xl"
-            color="red.600"
-          >
+          <Text alignSelf="flex-start" bold fontSize="xl" color="red.600">
             {event.name}
           </Text>
           <Text alignSelf="flex-start" fontSize="sm">
