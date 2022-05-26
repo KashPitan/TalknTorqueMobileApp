@@ -1,6 +1,6 @@
 import { LogBox, StyleSheet, SafeAreaView } from "react-native";
 import { NativeBaseProvider } from "native-base";
-import React, { useState } from "react";
+import React from "react";
 
 import * as Notifications from "expo-notifications";
 
