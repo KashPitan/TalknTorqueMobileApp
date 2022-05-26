@@ -1,26 +1,29 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
   "author": "Kash Pitan",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
     "build": "npx tsc && npm run add-assets",
     "add-assets": "copyfiles -u 1 'src/**/!(*.js|*.jsx|*.map|*.ts|*.tsx)' lib/",
-    "ios": "expo start --ios",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-native-community/datetimepicker": "4.0.0",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
     "@types/luxon": "^2.0.8",
     "expo": "~44.0.0",
+    "expo-device": "~4.1.0",
     "expo-image-picker": "~12.0.1",
-    "expo-linear-gradient": "~11.0.0",
-    "expo-linking": "^3.0.0",
+    "expo-linear-gradient": "~11.0.3",
+    "expo-linking": "~3.0.0",
+    "expo-notifications": "~0.14.0",
+    "expo-permissions": "~13.1.0",
     "expo-status-bar": "~1.2.0",
-    "firebase": "^9.6.1",
+    "firebase": "^9.7.0",
     "intl": "^1.2.5",
     "luxon": "^2.3.0",
     "native-base": "^3.3.0",
@@ -36,9 +39,8 @@
     "react-native-uuid": "^2.0.1",
     "react-native-web": "0.17.1",
     "validator": "^13.7.0",
-    "expo-notifications": "~0.14.0",
-    "expo-permissions": "~13.1.0",
-    "expo-device": "~4.1.0"
+    "expo-splash-screen": "~0.14.1",
+    "undefined": "react-native-firebase\\app"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -48,5 +50,7 @@
     "copyfiles": "^2.4.1",
     "typescript": "~4.3.5"
   },
-  "private": true
+  "private": true,
+  "name": "talkTorque",
+  "version": "1.0.0"
 }
