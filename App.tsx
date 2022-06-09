@@ -14,8 +14,6 @@ import EventScreen from "./src/screens/EventScreen";
 import CreateEventScreen from "./src/screens/CreateEventScreen";
 import ApprovalScreen from "./src/screens/ApprovalScreen";
 
-import GlobalNotifications from "./src/components/GlobalNotifications";
-
 //for luxon intl error
 import "intl";
 import { Platform } from "react-native";
@@ -79,7 +77,6 @@ export default function App() {
           <Stack.Screen name="SignIn Screen" component={SignInScreen} />
           <Stack.Screen name="Approval Screen" component={ApprovalScreen} />
         </Stack.Navigator>
-        <GlobalNotifications />
       </NavigationContainer>
     </NativeBaseProvider>
   );
