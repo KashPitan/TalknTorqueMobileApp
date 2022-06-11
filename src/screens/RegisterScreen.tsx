@@ -86,7 +86,7 @@ const RegisterScreen = ({ navigation }) => {
           navigation.navigate("Home Screen");
         } else {
           toast.show({ description: "Pending approval" });
-          navigation.navigate("Approval Screen");
+          navigation.navigate("Login Screen");
         }
       }
       setLoading(false);

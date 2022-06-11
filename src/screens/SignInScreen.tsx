@@ -68,7 +68,7 @@ const SignInScreen = ({ navigation }) => {
         navigation.navigate("Home Screen");
       } else {
         toast.show({ description: "Pending approval" });
-        navigation.navigate("Approval Screen");
+        // navigation.navigate("Approval Screen");
       }
     } catch (error) {
       // console.log(error);
