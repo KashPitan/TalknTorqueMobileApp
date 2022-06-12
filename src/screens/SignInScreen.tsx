@@ -62,12 +62,12 @@ const SignInScreen = ({ navigation }) => {
       setLoading(false);
 
       const isUserApproved = await User.isApproved(user.user.uid);
-
+      console.log(isUserApproved);
       if (isUserApproved) {
         toast.show({ description: "Successfully Logged In! :)" });
         navigation.navigate("Home Screen");
       } else {
-        toast.show({ description: "Pending approval" });
+        toast.show({ description: "Account pending approval" });
         // navigation.navigate("Approval Screen");
       }
     } catch (error) {
@@ -217,7 +217,7 @@ const SignInScreen = ({ navigation }) => {
               style={styles.dropShadow}
               onPress={() => navigation.navigate("Register Screen")}
             >
-              Register
+              <Text color="black">Register</Text>
             </Button>
           </FormControl>
 

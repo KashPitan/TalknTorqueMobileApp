@@ -85,8 +85,8 @@ const RegisterScreen = ({ navigation }) => {
           toast.show({ description: "Account succesfully created!" });
           navigation.navigate("Home Screen");
         } else {
-          toast.show({ description: "Pending approval" });
-          navigation.navigate("Login Screen");
+          toast.show({ description: "Account pending approval" });
+          navigation.navigate("SignIn Screen");
         }
       }
       setLoading(false);
@@ -294,7 +294,7 @@ const RegisterScreen = ({ navigation }) => {
                 isLoading
                 isLoadingText="Registering"
               >
-                Register
+                <Text color="black">Register</Text>
               </Button>
             ) : (
               <Button
@@ -306,7 +306,7 @@ const RegisterScreen = ({ navigation }) => {
                 style={styles.dropShadow}
                 onPress={() => handleRegister()}
               >
-                Register
+                <Text color="black">Register</Text>
               </Button>
             )}
           </FormControl>
