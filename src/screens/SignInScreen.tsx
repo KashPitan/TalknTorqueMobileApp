@@ -22,7 +22,7 @@ import validator from "validator";
 import User from "../classes/User";
 
 import { auth } from "../../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 import TTBackground from "../../assets/images/TTLoginBackground.png";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -67,6 +67,7 @@ const SignInScreen = ({ navigation }) => {
         toast.show({ description: "Successfully Logged In! :)" });
         navigation.navigate("Home Screen");
       } else {
+        await signOut(auth);
         toast.show({ description: "Account pending approval" });
         // navigation.navigate("Approval Screen");
       }

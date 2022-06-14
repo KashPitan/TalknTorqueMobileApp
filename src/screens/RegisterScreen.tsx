@@ -21,7 +21,11 @@ import User from "../classes/User";
 
 import validator from "validator";
 
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signOut,
+} from "firebase/auth";
 import { auth } from "../../firebase";
 
 import TTBackground from "../../assets/images/TTLoginBackground.png";
@@ -85,6 +89,7 @@ const RegisterScreen = ({ navigation }) => {
           toast.show({ description: "Account succesfully created!" });
           navigation.navigate("Home Screen");
         } else {
+          await signOut(auth);
           toast.show({ description: "Account pending approval" });
           navigation.navigate("SignIn Screen");
         }
