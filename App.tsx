@@ -60,7 +60,7 @@ export default function App() {
     <NativeBaseProvider config={config}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Home Screen"
+          initialRouteName="SignIn Screen"
           screenOptions={{
             headerShown: false,
           }}
