@@ -20,6 +20,7 @@ import {
 import validator from "validator";
 
 import User from "../classes/User";
+import generatePushNotificationsToken from "../helper/Notifications/generatePushNotificationToken";
 
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
@@ -44,7 +45,6 @@ const SignInScreen = ({ navigation }) => {
   useEffect(() => {
     setLoading(false);
     setPassword("");
-    setEmail("");
   }, []);
 
   const handleSignIn = async () => {
@@ -52,18 +52,23 @@ const SignInScreen = ({ navigation }) => {
 
     const isFormComplete = checkFormFilledOut();
     if (!isFormComplete) return;
-
     if (error) return;
 
     try {
       setLoading(true);
 
       const user = await signInWithEmailAndPassword(auth, email, password);
+      const userId = user.user.uid;
+      const isUserApproved = await User.isApproved(userId);
+
       setLoading(false);
 
-      const isUserApproved = await User.isApproved(user.user.uid);
-      console.log(isUserApproved);
       if (isUserApproved) {
+        console.log("first");
+
+        const pushNotificationToken = await generatePushNotificationsToken();
+        User.updatePushNotificationToken(userId, pushNotificationToken);
+
         toast.show({ description: "Successfully Logged In! :)" });
         navigation.navigate("Home Screen");
       } else {
@@ -125,6 +130,7 @@ const SignInScreen = ({ navigation }) => {
               </Text>
             </FormControl.Label>
             <Input
+              value={email}
               mb="4"
               placeholderTextColor="gray.400"
               placeholder="Login Email"
@@ -152,6 +158,7 @@ const SignInScreen = ({ navigation }) => {
               </Text>
             </FormControl.Label>
             <Input
+              value={password}
               placeholderTextColor="gray.400"
               placeholder="Password"
               type="password"

@@ -25,6 +25,7 @@
     "expo-permissions": "~13.2.0",
     "expo-splash-screen": "~0.15.1",
     "expo-status-bar": "~1.3.0",
+    "expo-task-manager": "~10.2.1",
     "firebase": "^9.8.3",
     "intl": "^1.2.5",
     "luxon": "^2.3.0",
@@ -52,6 +53,6 @@
     "typescript": "~4.3.5"
   },
   "private": true,
-  "name": "Talk & Torque",
+  "name": "TalkAndTorque",
   "version": "1.0.0"
 }

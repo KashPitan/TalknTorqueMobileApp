@@ -68,8 +68,6 @@ const EventScreen = ({ route, children }): JSX.Element => {
     const eventAttendanceListListener = onSnapshot(
       doc(db, "events", event.id),
       (doc) => {
-        console.log("Current data: ", doc.data());
-
         let docData = doc.data();
         if (docData) {
           const currentUserDisplayName = auth.currentUser?.displayName;
