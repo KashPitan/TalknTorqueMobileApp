@@ -19,7 +19,6 @@ import { ImageBackground, StyleSheet } from "react-native";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import { EventType } from "../../types";
 import TTPic from "../../assets/images/TTPic.png";
 import AttendanceList from "../components/AttendanceList";
 
@@ -29,30 +28,21 @@ import { getDownloadURL, ref } from "firebase/storage";
 import {
   doc,
   updateDoc,
-  arrayUnion,
-  arrayRemove,
   onSnapshot,
+  getDoc,
+  deleteField,
 } from "firebase/firestore";
 
-const dummyEvent: EventType = {
-  id: "test",
-  name: "VROOOOOOM",
-  location: "London, that place",
-  month: "Jan",
-  day: 3,
-  description: "Heeheeheeee Hahahahahahaha",
-  attendance: [],
-};
-
+// BREAK UP THIS SCREEN
 const EventScreen = ({ route, children }): JSX.Element => {
   const navigation = useNavigation();
-  const { event } = route.params ?? dummyEvent;
+  const { event } = route.params;
   const imageUri = event ? event.imageUri : null;
 
   const firebaseStorageReference = ref(storage, imageUri);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
 
-  const [attendanceList, setAttendanceList] = useState<string[]>([]);
+  const [attendanceList, setAttendanceList] = useState<{}>({});
   const [isAttending, setIsAttending] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -68,23 +58,13 @@ const EventScreen = ({ route, children }): JSX.Element => {
     const eventAttendanceListListener = onSnapshot(
       doc(db, "events", event.id),
       (doc) => {
-        let docData = doc.data();
+        const docData = doc.data();
         if (docData) {
-          const currentUserDisplayName = auth.currentUser?.displayName;
           const attendanceListFromDocument = docData.attendance;
-          if (attendanceListFromDocument.includes(currentUserDisplayName)) {
-            attendanceListFromDocument.filter(
-              (item) => item !== currentUserDisplayName
-            );
-            attendanceListFromDocument.unshift(currentUserDisplayName);
-            setAttendanceList(attendanceListFromDocument);
-          } else {
-            setAttendanceList(attendanceListFromDocument);
-          }
+          setAttendanceList(attendanceListFromDocument);
         }
       }
     );
-    const currentUserEmail = auth.currentUser?.email;
 
     return () => {
       // close attendance list listener when navigation from page
@@ -95,14 +75,16 @@ const EventScreen = ({ route, children }): JSX.Element => {
   useEffect(() => {
     // set the attendance status of the current user based on the event attendance information
     const currentUserDisplayName = auth.currentUser?.displayName;
-    if (currentUserDisplayName) {
-      setIsAttending(attendanceList.includes(currentUserDisplayName));
+    const currentUserId = auth.currentUser?.uid;
+
+    if (currentUserDisplayName && currentUserId) {
+      setIsAttending(attendanceList[currentUserId]);
     } else {
       setIsAttending(false);
     }
   }, [attendanceList]);
 
-  const onChangeCheckbox = async () => {
+  const onChangeCheckbox = () => {
     setIsAttending(!isAttending);
   };
 
@@ -110,15 +92,27 @@ const EventScreen = ({ route, children }): JSX.Element => {
     setIsSubmitting(true);
     const eventRef = doc(db, "events", event.id);
 
-    // set up watch function for event attendance list
-    // tabs for attendance
     const currentUserDisplayName = auth.currentUser?.displayName;
+    const currentUserId = auth.currentUser?.uid;
+    if (!currentUserId || !currentUserDisplayName) return;
     try {
+      const userRef = doc(db, "users", currentUserId);
+      const userDocSnapshot = await getDoc(userRef);
+
+      if (!userDocSnapshot.exists()) return;
+      const user = userDocSnapshot.data();
+      const pushToken = user.pushNotificationToken;
+
+      const data = {
+        name: currentUserDisplayName,
+        pushNotificationToken: pushToken,
+      };
+
+      const attendeeIdentifier = `attendance.${currentUserId}`;
+
       // update attendance array: remove user is submitting attending: false and vice versa
       await updateDoc(eventRef, {
-        attendance: isAttending
-          ? arrayUnion(currentUserDisplayName)
-          : arrayRemove(currentUserDisplayName),
+        [attendeeIdentifier]: isAttending ? data : deleteField(),
       });
     } catch (error) {
       console.log(error);
@@ -265,9 +259,5 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: 300,
-    // justifyContent: "start",
-  },
-  text: {
-    // white-space: pre-line;
   },
 });
