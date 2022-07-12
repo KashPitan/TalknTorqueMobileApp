@@ -4,7 +4,7 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDK2Unl81W0_FieCzDRjYoeze4DIAiLEpQ",
+  apiKey: "AIzaSyBkDqJD5oK5B5ajrgUpDZPy6mAnlKcZHmg",
   authDomain: "talktorque-4d234.firebaseapp.com",
   projectId: "talktorque-4d234",
   storageBucket: "talktorque-4d234.appspot.com",
