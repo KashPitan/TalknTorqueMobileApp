@@ -61,18 +61,19 @@ const SignInScreen = ({ navigation }) => {
       const userId = user.user.uid;
       const isUserApproved = await User.isApproved(userId);
 
-      setLoading(false);
-
       if (isUserApproved) {
         console.log("first");
 
         const pushNotificationToken = await generatePushNotificationsToken();
         User.updatePushNotificationToken(userId, pushNotificationToken);
 
+        setLoading(false);
         toast.show({ description: "Successfully Logged In! :)" });
         navigation.navigate("Home Screen");
       } else {
         await signOut(auth);
+
+        setLoading(false);
         toast.show({ description: "Account pending approval" });
         // navigation.navigate("Approval Screen");
       }
