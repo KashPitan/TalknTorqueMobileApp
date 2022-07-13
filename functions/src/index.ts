@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import fetch from "node-fetch";
-import { DateTime, DateTime as Luxon } from "luxon";
+import { DateTime as Luxon } from "luxon";
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -9,11 +9,11 @@ const db = admin.firestore();
 // trigger when a new event is added
 exports.newEventNotification = functions.firestore
   .document("events/{id}")
-  .onCreate((snap, context) => {
+  .onCreate((snap) => {
     const eventData = snap.data();
 
-    let tokens: string[] = [];
-    let messages: { to: string; body: string }[] = [];
+    const tokens: string[] = [];
+    const messages: { to: string; body: string }[] = [];
 
     db.collection("users")
       .get()
@@ -60,7 +60,7 @@ exports.scheduleEventReminder = functions.pubsub
     const latestEvent = eventsSnapshot.docs[0].data();
     const attendanceList = latestEvent.attendance;
 
-    let messages: { to: string; body: string }[] = [];
+    const messages: { to: string; body: string }[] = [];
     functions.logger.info(latestEvent);
     functions.logger.info(attendanceList);
     Object.keys(attendanceList).forEach((key) => {
