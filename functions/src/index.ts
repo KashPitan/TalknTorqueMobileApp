@@ -45,7 +45,7 @@ exports.newEventNotification = functions.firestore
   });
 
 exports.scheduleEventReminder = functions.pubsub
-  .schedule("every day 00:04")
+  .schedule("every day 10:00")
   .timeZone("Europe/London")
   .onRun(async () => {
     const today = Luxon.now();
@@ -57,18 +57,23 @@ exports.scheduleEventReminder = functions.pubsub
       .orderBy("date")
       .get();
 
-    const latestEvent = eventsSnapshot.docs[0].data();
-    const attendanceList = latestEvent.attendance;
+    const nextEvent = eventsSnapshot.docs[0].data();
+    const attendanceList = nextEvent.attendance;
+    const nextEventDate = Luxon.fromJSDate(new Date(nextEvent.date.toDate()));
+
+    const daysTilNextEvent = nextEventDate.diff(today, "days").toObject().days;
+    if (!daysTilNextEvent) return;
+
+    // event is not tomorrow so no need to send reminder notifications
+    if (daysTilNextEvent > 1) return;
 
     const messages: { to: string; body: string }[] = [];
-    functions.logger.info(latestEvent);
-    functions.logger.info(attendanceList);
+
     Object.keys(attendanceList).forEach((key) => {
-      functions.logger.info(key, attendanceList[key]);
       const userPushToken = attendanceList[key].pushNotificationToken;
 
       if (userPushToken)
-        messages.push({ to: userPushToken, body: latestEvent.name });
+        messages.push({ to: userPushToken, body: nextEvent.name });
     });
 
     fetch("https://exp.host/--/api/v2/push/send", {
