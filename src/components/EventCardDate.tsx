@@ -1,7 +1,8 @@
 import { Center, VStack, Text } from "native-base";
 import React, { FC } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { EventDateType } from "../../types";
+import { colors } from "../constants/themes";
 
 const EventCardDate: FC<{ eventDate: EventDateType }> = ({
   eventDate,
@@ -10,14 +11,13 @@ const EventCardDate: FC<{ eventDate: EventDateType }> = ({
     <Center>
       <VStack>
         <Center>
-          <Text bold fontSize="2xl">
+          <Text bold fontSize="md" alignSelf="center" color={colors.text.light}>
+            {eventDate.month}
+          </Text>
+          <Text bold fontSize="2xl" alignSelf="center">
             {eventDate.day}
           </Text>
         </Center>
-
-        <Text bold fontSize="sm">
-          {eventDate.month}
-        </Text>
       </VStack>
     </Center>
   );
