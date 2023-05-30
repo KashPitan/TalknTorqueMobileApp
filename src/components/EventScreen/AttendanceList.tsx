@@ -1,5 +1,6 @@
-import React, { FC } from "react";
-import { FlatList, Text } from "native-base";
+import React, { FC } from 'react';
+import { FlatList, Text } from 'native-base';
+import AttendeeItem from './AttendeeItem';
 
 const AttendanceList: FC<{ attendanceList: {} }> = ({
   children,
@@ -13,7 +14,9 @@ const AttendanceList: FC<{ attendanceList: {} }> = ({
       <FlatList
         keyExtractor={(item, index) => index.toString()}
         data={Object.keys(attendanceList)}
-        renderItem={(item) => <Text>{attendanceList[item.item].name}</Text>}
+        renderItem={(item) => (
+          <AttendeeItem attendee={attendanceList[item.item]}></AttendeeItem>
+        )}
       />
     </>
   );

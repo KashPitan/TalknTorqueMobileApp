@@ -9,40 +9,41 @@ import {
   Text,
   TextArea,
   VStack,
-} from "native-base";
-import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+} from 'native-base';
+import React, { useState } from 'react';
+import { StyleSheet } from 'react-native';
 
-import uuid from "react-native-uuid";
-import { DateTime as Luxon } from "luxon";
+import uuid from 'react-native-uuid';
+import { DateTime as Luxon } from 'luxon';
 
-import DateTimePicker from "@react-native-community/datetimepicker";
-import ImagePicker from "../components/ImagePicker";
+import DateTimePicker from '@react-native-community/datetimepicker';
+import ImagePicker from '../components/ImagePicker';
 
 import {
   collection,
   addDoc,
   Timestamp,
   serverTimestamp,
-} from "firebase/firestore";
+} from 'firebase/firestore';
 
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage, db } from "../../firebase";
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage, db } from '../../firebase';
 
-import { EventRecordType } from "../../types";
-import Event from "../classes/Event";
+import { EventRecordType } from '../../types';
+import Event from '../classes/Event';
+import { colors } from '../constants/themes';
 
 const CreateEventScreen = () => {
   const [formState, setFormState] = useState({
-    name: "",
+    name: '',
     initialDate: new Date(Luxon.now().toMillis()),
-    description: "",
-    location: "",
-    gmapsLink: "",
-    time: "",
-    displayTime: "",
-    date: "",
-    displayDate: "",
+    description: '',
+    location: '',
+    gmapsLink: '',
+    time: '',
+    displayTime: '',
+    date: '',
+    displayDate: '',
     day: 0,
     month: 0,
     year: 0,
@@ -55,7 +56,7 @@ const CreateEventScreen = () => {
   const [isSubmittingForm, setIsSubmittingForm] = useState<boolean>(false);
 
   const [datePickerVisible, setDatePickerVisible] = useState(false);
-  const [mode, setMode] = useState<string>("date");
+  const [mode, setMode] = useState<string>('date');
 
   const onChangeDate = (event, selectedDate) => {
     // this function is called when you hit confirm or cancel which causes the app to crash
@@ -65,28 +66,28 @@ const CreateEventScreen = () => {
     if (!selectedDate) return;
 
     //remove 'Z' from end of date string
-    const splitDate = selectedDate.toString().split("G")[0].trim();
+    const splitDate = selectedDate.toString().split('G')[0].trim();
 
     const formattedDate = Luxon.fromFormat(
       splitDate,
-      "EEE MMM dd yyyy HH:mm:ss"
+      'EEE MMM dd yyyy HH:mm:ss'
     );
 
-    if (mode === "date") {
+    if (mode === 'date') {
       setFormState({
         ...formState,
-        displayDate: formattedDate.toFormat("EEE MMM dd yyyy"),
+        displayDate: formattedDate.toFormat('EEE MMM dd yyyy'),
         date: splitDate,
         day: formattedDate.day,
         month: formattedDate.month - 1,
         year: formattedDate.year,
       });
-    } else if (mode === "time") {
+    } else if (mode === 'time') {
       // console.log(formattedDate.toFormat("HH:mm:ss"));
 
       setFormState({
         ...formState,
-        displayTime: formattedDate.toFormat("HH:mm:ss"),
+        displayTime: formattedDate.toFormat('HH:mm:ss'),
         time: splitDate,
         hours: formattedDate.hour,
         minutes: formattedDate.minute,
@@ -97,12 +98,12 @@ const CreateEventScreen = () => {
   };
 
   const showTimePicker = () => {
-    setMode("time");
+    setMode('time');
     setDatePickerVisible(true);
   };
 
   const showDatePicker = () => {
-    setMode("date");
+    setMode('date');
     setDatePickerVisible(true);
   };
 
@@ -160,44 +161,44 @@ const CreateEventScreen = () => {
   };
 
   const validate = () => {
-    if (formState.name === "") {
-      setErrors("Event name is required");
+    if (formState.name === '') {
+      setErrors('Event name is required');
       // console.log("hi");
       return false;
     }
 
     if (formState.day === 0) {
-      setErrors("Date is required");
+      setErrors('Date is required');
       return false;
     }
 
     if (formState.hours === 0) {
-      setErrors("Time is required");
+      setErrors('Time is required');
       return false;
     }
 
-    if (formState.location === "") {
-      setErrors("Location is required");
+    if (formState.location === '') {
+      setErrors('Location is required');
       return false;
     }
 
     if (formState.gmapsLink) {
-      if (formState.gmapsLink.includes("https://goo.gl/maps/")) {
-        setErrors("Invalid google maps link");
+      if (formState.gmapsLink.includes('https://goo.gl/maps/')) {
+        setErrors('Invalid google maps link');
         return false;
       }
     }
   };
 
   return (
-    <>
+    <Box p="2" h="100%">
       <Center mt="4">
         <Text fontSize="lg" bold={true} my="6">
           Create New Event
         </Text>
       </Center>
       <Divider />
-      <ScrollView flex={1}>
+      <ScrollView flex={1} showsVerticalScrollIndicator={false}>
         <VStack width="90%" mx="3" mt="6">
           <FormControl isRequired my="2">
             <FormControl.Label _text={{ bold: true }}>
@@ -206,6 +207,7 @@ const CreateEventScreen = () => {
             <Input
               placeholder="Event name not set"
               size="lg"
+              rounded="lg"
               onChangeText={(value) =>
                 setFormState({ ...formState, name: value })
               }
@@ -219,9 +221,11 @@ const CreateEventScreen = () => {
               placeholder="Event description"
               placeholderTextColor="gray.400"
               size="lg"
+              rounded="lg"
               onChangeText={(description) =>
                 setFormState({ ...formState, description })
               }
+              autoCompleteType={undefined}
             />
           </FormControl>
           <FormControl isRequired>
@@ -235,6 +239,7 @@ const CreateEventScreen = () => {
                 setFormState({ ...formState, location })
               }
               size="lg"
+              rounded="lg"
               color="black"
             />
           </FormControl>
@@ -250,6 +255,7 @@ const CreateEventScreen = () => {
                 setFormState({ ...formState, gmapsLink })
               }
               size="lg"
+              rounded="lg"
               color="black"
             />
           </FormControl>
@@ -260,30 +266,44 @@ const CreateEventScreen = () => {
               value={
                 formState.date
                   ? formState.displayDate.toString()
-                  : "Date not set"
+                  : 'Date not set'
               }
               placeholder="Date"
               placeholderTextColor="gray.400"
               onChangeText={(date) => setFormState({ ...formState, date })}
               size="lg"
+              rounded="lg"
               color="gray.400"
               isDisabled={true}
             />
-            <Button onPress={() => showDatePicker()}>Select Date</Button>
+            <Button
+              rounded="3xl"
+              bgColor={colors.text.highlight}
+              onPress={() => showDatePicker()}
+            >
+              Select Date
+            </Button>
           </FormControl>
 
           <FormControl isRequired my="1">
             <FormControl.Label _text={{ bold: true }}>Time</FormControl.Label>
             <Input
-              value={formState.time ? formState.displayTime : "Time not set"}
+              value={formState.time ? formState.displayTime : 'Time not set'}
               placeholder="Time"
               placeholderTextColor="gray.400"
               size="lg"
+              rounded="lg"
               color="gray.400"
               isDisabled={true}
             />
 
-            <Button onPress={() => showTimePicker()}>Select Time</Button>
+            <Button
+              rounded="3xl"
+              bgColor={colors.text.highlight}
+              onPress={() => showTimePicker()}
+            >
+              Select Time
+            </Button>
           </FormControl>
 
           <FormControl my="1">
@@ -305,6 +325,8 @@ const CreateEventScreen = () => {
             isLoadingText="Submitting"
             colorScheme="cyan"
             mt="5"
+            rounded="3xl"
+            bgColor={colors.text.highlight}
           >
             Submit
           </Button>
@@ -319,7 +341,7 @@ const CreateEventScreen = () => {
           onChange={onChangeDate}
         />
       )}
-    </>
+    </Box>
   );
 };
 

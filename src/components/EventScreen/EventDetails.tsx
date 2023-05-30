@@ -20,11 +20,14 @@ const EventDetails: FC<{ event: EventType }> = ({
   useEffect(() => {
     (async () => {
       // store this inside the location data of each event instead to save api calls
-      const res = await geocode(event.location);
-      const { lat, lng } = res;
+      // const res = await geocode(event.location);
+      // const { lat, lng } = res;
+      const lat = null;
+      const lng = null;
 
-      if (lat && lng) setLocation({ latitude: lat, longitude: lng });
-      console.log(res);
+      if (lat && lng)
+        setLocation({ latitude: 37.58817, longitude: -122.4903973 });
+      // console.log(res);
     })();
   }, []);
   return (

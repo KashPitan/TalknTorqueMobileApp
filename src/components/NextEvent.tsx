@@ -1,8 +1,8 @@
-import React, { FC } from "react";
-import { Text, Center, Skeleton, Box, View } from "native-base";
-import EventCard from "./EventCard";
-import { EventType } from "../../types";
-import { colors } from "../constants/themes";
+import React, { FC, lazy } from 'react';
+import { Text, Center, Skeleton } from 'native-base';
+import EventCard from './EventCard';
+import { EventType } from '../../types';
+import { colors } from '../constants/themes';
 
 const NextEvent: FC<{ events: EventType[] }> = ({ events }): JSX.Element => {
   return (
@@ -19,7 +19,11 @@ const NextEvent: FC<{ events: EventType[] }> = ({ events }): JSX.Element => {
       </Text>
 
       <Center alignItems="flex-start" flexDirection="row" px="2">
-        {events[0] && <EventCard event={events[0]} />}
+        {events[0] ? (
+          <EventCard event={events[0]} />
+        ) : (
+          <Text>No new events :(</Text>
+        )}
       </Center>
     </>
   );

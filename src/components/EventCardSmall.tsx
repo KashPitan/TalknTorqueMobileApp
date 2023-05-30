@@ -58,7 +58,7 @@ const EventCard: FC<{ event: EventType }> = ({ event }): JSX.Element => {
                 >
                   <LinearGradient
                     colors={['#00000000', '#000000']}
-                    start={{ x: 0, y: 0.5 }}
+                    start={{ x: 0.5, y: 0.5 }}
                     style={{
                       height: '100%',
                       width: '100%',

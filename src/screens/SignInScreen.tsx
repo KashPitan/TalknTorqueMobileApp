@@ -78,7 +78,7 @@ const SignInScreen = ({ navigation }) => {
         // navigation.navigate("Approval Screen");
       }
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       // console.log(error?.message);
       console.log(error.code);
 
