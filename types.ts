@@ -1,4 +1,4 @@
-import { Timestamp } from "firebase/firestore";
+import { FieldValue, Timestamp } from "firebase/firestore";
 
 export interface EventType {
   month: string;
@@ -11,6 +11,7 @@ export interface EventType {
   gmapsLink?: string;
   id: string;
   attendance: string[];
+  createdAt: FieldValue;
 }
 
 export type EventDateType = {
@@ -26,4 +27,5 @@ export type EventRecordType = {
   imageUri?: string;
   gmapsLink?: string;
   attendance: string[];
+  createdAt: FieldValue;
 };

@@ -1,10 +1,11 @@
-import React, { FC, useEffect, useState } from "react";
-import { StyleSheet, ImageBackground } from "react-native";
-import { Box, Text, VStack, Center } from "native-base";
-import EventCardDate from "./EventCardDate";
-import { storage } from "../../firebase";
-import { getDownloadURL, ref } from "firebase/storage";
-import { EventType } from "../../types";
+import React, { FC, useEffect, useState } from 'react';
+import { StyleSheet, ImageBackground } from 'react-native';
+import { Box, Text, VStack, Center, Skeleton } from 'native-base';
+import EventCardDate from './EventCardDate';
+import { storage } from '../../../firebase';
+import { getDownloadURL, ref } from 'firebase/storage';
+import { EventType } from '../../../types';
+
 const EventCard: FC<{ event: EventType }> = ({ event }): JSX.Element => {
   const firebaseStorageReference = ref(storage, event.imageUri);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
@@ -13,11 +14,13 @@ const EventCard: FC<{ event: EventType }> = ({ event }): JSX.Element => {
     // if the uri string contains this its a storage location reference
     // so we need to get the download url from it
     // if not it should already be a download url
-    if (event.imageUri?.includes("talktorque")) {
+    if (event.imageUri?.includes('talktorque')) {
       (async () => {
         const firebaseDownloadUrl = await getDownloadURL(
           firebaseStorageReference
         );
+        console.log('test');
+        console.log(firebaseDownloadUrl);
         setDownloadUrl(firebaseDownloadUrl);
       })();
     }
@@ -31,11 +34,12 @@ const EventCard: FC<{ event: EventType }> = ({ event }): JSX.Element => {
             resizeMode="cover"
             style={styles.image}
             borderRadius={15}
+            fadeDuration={400}
           >
             <Center
               bg="gray.100"
               position="absolute"
-              top="271"
+              top="171"
               left="0"
               px="3"
               py="0.5"
@@ -58,8 +62,6 @@ const EventCard: FC<{ event: EventType }> = ({ event }): JSX.Element => {
               px="3"
               py="0.5"
               rounded="xl"
-              borderWidth="2"
-              borderColor="gray.300"
             >
               <EventCardDate
                 eventDate={{ month: event.month, day: event.day }}
@@ -77,15 +79,7 @@ export default EventCard;
 const styles = StyleSheet.create({
   image: {
     flex: 1,
-    width: "100%",
-    height: 300,
-  },
-  text: {
-    color: "white",
-    fontSize: 42,
-    lineHeight: 84,
-    fontWeight: "bold",
-    textAlign: "center",
-    backgroundColor: "#000000c0",
+    width: '100%',
+    height: 200,
   },
 });

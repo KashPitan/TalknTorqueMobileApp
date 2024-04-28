@@ -1,20 +1,14 @@
-import { Box, Button, Center, Image, Text } from "native-base";
-import React, { FC, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import * as ExpoImagePicker from "expo-image-picker";
-
-// interface ImagePickerProps {
-//   setParentImageState: (imageUri: string) => void;
-//   image: string | undefined;
-// }
+import { Box, Button, Center, Image, Text } from 'native-base';
+import React, { FC, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import * as ExpoImagePicker from 'expo-image-picker';
+import { colors } from '../constants/themes';
 
 const ImagePicker: FC<{
   setParentImageState: (imageUri: string) => void;
-  image: string;
+  image: string | null;
 }> = ({ setParentImageState, image }) => {
-  // const [image, setImage] = useState<null | string>(null);
-  const [uploading, setUploading] = useState(false);
-
+  const [imageState, setImageState] = useState<string | null>();
   const buttonHandler = async () => {
     let result = await ExpoImagePicker.launchImageLibraryAsync({
       mediaTypes: ExpoImagePicker.MediaTypeOptions.Images,
@@ -22,18 +16,22 @@ const ImagePicker: FC<{
       aspect: [4, 3],
       quality: 1,
     });
-    console.log(result);
 
-    if (!result.cancelled) {
-      setParentImageState(result.uri);
+    if (!result.canceled) {
+      // console.log(result.uri);
+      setImageState(result.assets[0].uri);
+      setParentImageState(result.assets[0].uri);
     }
   };
 
   return (
     <View>
-      {image ? (
+      {imageState ? (
         <Center>
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+          <Image
+            source={{ uri: imageState }}
+            style={{ width: 200, height: 200 }}
+          />
         </Center>
       ) : (
         <Center>
@@ -49,7 +47,12 @@ const ImagePicker: FC<{
         </Center>
       )}
 
-      <Button mt="3" onPress={() => buttonHandler()}>
+      <Button
+        rounded="3xl"
+        bgColor={colors.text.highlight}
+        mt="3"
+        onPress={() => buttonHandler()}
+      >
         Select Image
       </Button>
     </View>

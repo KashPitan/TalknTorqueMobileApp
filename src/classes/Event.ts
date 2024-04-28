@@ -1,5 +1,5 @@
-import { EventType } from "../../types";
-import { DateTime, DateTime as Luxon } from "luxon";
+import { EventType } from '../../types';
+import { DateTime, DateTime as Luxon } from 'luxon';
 import {
   collection,
   getDocs,
@@ -7,9 +7,10 @@ import {
   query,
   where,
   addDoc,
-} from "firebase/firestore";
-import { db } from "../../firebase";
-import { EventRecordType } from "../../types";
+  FieldValue,
+} from 'firebase/firestore';
+import { db } from '../../firebase';
+import { EventRecordType } from '../../types';
 
 export default class Event implements EventType {
   month: string;
@@ -17,6 +18,7 @@ export default class Event implements EventType {
   name: string;
   location: string;
   attendance: string[];
+  createdAt: FieldValue;
   description?: string;
   imageUri?: string;
   fullDate?: string;
@@ -30,6 +32,7 @@ export default class Event implements EventType {
     location: string,
     id: string,
     attendance: string[],
+    createdAt: FieldValue,
     description?: string,
     imageUri?: string,
     fullDate?: string,
@@ -45,12 +48,13 @@ export default class Event implements EventType {
     this.gmapsLink = gmapsLink;
     this.id = id;
     this.attendance = attendance;
+    this.createdAt = createdAt;
   }
 
   getRefById = async () => {};
 
   static uploadEvent = async (eventRecord: EventRecordType) => {
-    await addDoc(collection(db, "events"), eventRecord);
+    await addDoc(collection(db, 'events'), eventRecord);
   };
 
   static getMostRecentEvents = async () => {
@@ -61,9 +65,9 @@ export default class Event implements EventType {
       const todayTimestamp = new Date(today.toString());
 
       const eventCollectionQuery = query(
-        collection(db, "events"),
-        where("date", ">", todayTimestamp),
-        orderBy("date")
+        collection(db, 'events'),
+        where('date', '>', todayTimestamp),
+        orderBy('date')
       );
 
       const eventsQuerySnapshot = await getDocs(eventCollectionQuery);
@@ -79,10 +83,11 @@ export default class Event implements EventType {
           location: docData.location,
           day: date.day,
           imageUri: docData.imageUri,
-          fullDate: date.toFormat("cccc, d LLLL, yyyy"),
+          fullDate: date.toFormat('cccc, d LLLL, yyyy'),
           gmapsLink: docData.gmapsLink,
           id: doc.id,
           attendance: docData.attendance,
+          createdAt: docData.createdAt,
         };
 
         eventData.push(event);
@@ -90,6 +95,7 @@ export default class Event implements EventType {
     } catch (error) {
       console.log(error);
     }
+    console.log('eventdata', eventData);
     return eventData;
   };
 }

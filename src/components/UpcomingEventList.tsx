@@ -1,8 +1,7 @@
-import { FlatList } from "native-base";
-import React, { FC } from "react";
-import { StyleSheet } from "react-native";
-import { EventType } from "../../types";
-import UpcomingEventItem from "./UpcomingEventItem";
+import { FlatList } from 'native-base';
+import React, { FC } from 'react';
+import { EventType } from '../../types';
+import UpcomingEventItem from './UpcomingEventItem';
 
 const UpcomingEventList: FC<{ eventList: EventType[] }> = ({
   children,
@@ -18,5 +17,3 @@ const UpcomingEventList: FC<{ eventList: EventType[] }> = ({
 };
 
 export default UpcomingEventList;
-
-const styles = StyleSheet.create({});

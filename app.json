@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "talkTorque",
+    "name": "Talk & Torque",
     "slug": "talkTorque",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -11,20 +11,34 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/27490e4d-89dd-4c32-b93e-cb439cd6a4a8"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
+      "useNextNotificationsApi": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.kashpitan.talkandtorque"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "27490e4d-89dd-4c32-b93e-cb439cd6a4a8"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     }
   }
 }
