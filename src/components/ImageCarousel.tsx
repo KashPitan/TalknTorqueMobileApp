@@ -1,7 +1,7 @@
-import { Box, FlatList, Text, Image } from "native-base";
-import React from "react";
-import { eventPhotos } from "../../images/TTEventIndex";
-import { colors } from "../constants/themes";
+import { Box, FlatList, Text, Image } from 'native-base';
+import React from 'react';
+import { eventPhotos } from '../../images/TTEventIndex';
+import { colors } from '../constants/themes';
 
 const images = eventPhotos;
 const ImageCarousel = () => {
@@ -25,7 +25,7 @@ const ImageCarousel = () => {
           <Image source={item.item} mx="2" size="2xl" rounded="2xl" />
         )}
         horizontal
-        initialScrollIndex={1}
+        // initialScrollIndex={1}
         mb="6"
         px="4"
       ></FlatList>

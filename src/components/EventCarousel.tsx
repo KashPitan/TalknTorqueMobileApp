@@ -1,5 +1,5 @@
-import { Box, FlatList, Text, Image } from "native-base";
-import React from "react";
+import { Box, FlatList, Text, Image } from 'native-base';
+import React from 'react';
 
 const EventCarousel = () => {
   return (
@@ -10,7 +10,7 @@ const EventCarousel = () => {
         </Text>
         <Box w="11%" h="1" bgColor="white" rounded="xl" mb="3" ml="8" />
 
-        <FlatList
+        {/* <FlatList
           keyExtractor={(item, index) => index.toString()}
           data={images}
           renderItem={(item) => (
@@ -19,7 +19,7 @@ const EventCarousel = () => {
           horizontal
           initialScrollIndex={1}
           mb="6"
-        ></FlatList>
+        ></FlatList> */}
       </Box>
     </Box>
   );

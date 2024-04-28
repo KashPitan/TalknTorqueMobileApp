@@ -1,15 +1,15 @@
-import { Box, Center, FlatList, Text } from "native-base";
-import React, { FC } from "react";
-import { EventType } from "../../types";
-import EventCardSmall from "./EventCardSmall";
-import { colors } from "../constants/themes";
+import { Box, Center, FlatList, Text } from 'native-base';
+import React, { FC } from 'react';
+import { EventType } from '../../types';
+import EventCardSmall from './EventCard/EventCardSmall';
+import { colors } from '../constants/themes';
 
 const UpcomingEvents: FC<{ events: EventType[] }> = ({
   events,
 }): JSX.Element => {
   return (
     <Center>
-      <Text
+      {/* <Text
         alignSelf="flex-start"
         fontSize="lg"
         bold
@@ -39,7 +39,7 @@ const UpcomingEvents: FC<{ events: EventType[] }> = ({
         ) : (
           <Text>No Upcoming Events :(</Text>
         )}
-      </Box>
+      </Box> */}
     </Center>
   );
 };

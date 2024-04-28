@@ -52,6 +52,7 @@ const HomeScreen = () => {
     (async () => {
       await getScreenData();
     })();
+    console.log(events);
   }, []);
 
   return (

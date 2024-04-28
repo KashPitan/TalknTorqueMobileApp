@@ -2,9 +2,9 @@ import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, ImageBackground } from 'react-native';
 import { Box, Text, VStack, Center, Skeleton } from 'native-base';
 import EventCardDate from './EventCardDate';
-import { storage } from '../../firebase';
+import { storage } from '../../../firebase';
 import { getDownloadURL, ref } from 'firebase/storage';
-import { EventType } from '../../types';
+import { EventType } from '../../../types';
 
 const EventCard: FC<{ event: EventType }> = ({ event }): JSX.Element => {
   const firebaseStorageReference = ref(storage, event.imageUri);
@@ -19,8 +19,8 @@ const EventCard: FC<{ event: EventType }> = ({ event }): JSX.Element => {
         const firebaseDownloadUrl = await getDownloadURL(
           firebaseStorageReference
         );
-          console.log("test")
-          console.log(firebaseDownloadUrl);
+        console.log('test');
+        console.log(firebaseDownloadUrl);
         setDownloadUrl(firebaseDownloadUrl);
       })();
     }

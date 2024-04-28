@@ -9,7 +9,7 @@ import EventDetails from '../components/EventScreen/EventDetails';
 import EventImage from '../components/EventScreen/EventImage';
 import { colors } from '../constants/themes';
 
-const EventScreen = ({ route, children }): JSX.Element => {
+const EventScreen = ({ route, children }) => {
   const { event } = route.params;
 
   const layout = useWindowDimensions();

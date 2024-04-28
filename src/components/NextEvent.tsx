@@ -1,6 +1,6 @@
 import React, { FC, lazy } from 'react';
 import { Text, Center, Skeleton } from 'native-base';
-import EventCard from './EventCard';
+import EventCard from './EventCard/EventCard';
 import { EventType } from '../../types';
 import { colors } from '../constants/themes';
 

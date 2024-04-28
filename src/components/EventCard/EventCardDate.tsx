@@ -1,8 +1,8 @@
-import { Center, VStack, Text } from "native-base";
-import React, { FC } from "react";
-import { StyleSheet } from "react-native";
-import { EventDateType } from "../../types";
-import { colors } from "../constants/themes";
+import { Center, VStack, Text } from 'native-base';
+import React, { FC } from 'react';
+import { StyleSheet } from 'react-native';
+import { EventDateType } from '../../../types';
+import { colors } from '../../constants/themes';
 
 const EventCardDate: FC<{ eventDate: EventDateType }> = ({
   eventDate,
