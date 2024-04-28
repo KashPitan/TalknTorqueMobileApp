@@ -12,17 +12,22 @@ import {
   Modal,
   FormControl,
   Link,
-} from "native-base";
-import React, { useEffect, useState } from "react";
-import { StyleSheet, StatusBar } from "react-native";
+  Center,
+  View,
+  Icon,
+} from 'native-base';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, StatusBar } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-import tandtlogo from "../../images/T&T2022LogoCropped.png";
+import tandtlogo from '../../images/T&T2022LogoCropped.png';
 
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebase";
+import { signOut } from 'firebase/auth';
+import { auth } from '../../../firebase';
 
-import { useNavigation } from "@react-navigation/native";
-import { checkIsAdmin } from "../helper/checkIsAdmin";
+import { useNavigation } from '@react-navigation/native';
+import { checkIsAdmin } from '../../helper/checkIsAdmin';
+import { colors } from '../../constants/themes';
 
 const Header = () => {
   const navigation = useNavigation();
@@ -35,10 +40,10 @@ const Header = () => {
     try {
       await signOut(auth);
       toast.show({
-        description: "logged out",
+        description: 'logged out',
       });
 
-      navigation.navigate("SignIn Screen");
+      navigation.navigate('SignIn Screen');
     } catch (error) {
       console.log(error);
     }
@@ -50,7 +55,7 @@ const Header = () => {
       if (user) {
         (async () => {
           const adminCheck = await checkIsAdmin();
-          console.log("is admin?: ", adminCheck);
+          console.log('is admin?: ', adminCheck);
           setIsAdmin(adminCheck);
         })();
       }
@@ -63,26 +68,45 @@ const Header = () => {
   }, []);
   return (
     <>
-      <Box bgColor="red.500" p="4" pb="1">
-        <StatusBar animated={true} showHideTransition={"slide"} hidden={true} />
-        <HStack marginTop="6">
+      <Box
+        bg={{
+          linearGradient: {
+            colors: ['rose.900', 'red.600'],
+            start: [1, 1],
+            end: [0, 1],
+          },
+        }}
+        p="4"
+        pb="1"
+        h="170px"
+      >
+        <Center></Center>
+        <StatusBar animated={true} showHideTransition={'slide'} hidden={true} />
+        <HStack mt="1">
           <Menu
             w="190"
             trigger={(triggerProps) => {
               return (
                 <Pressable
-                  onPress={() => console.log("test")}
+                  onPress={() => console.log('test')}
                   accessibilityLabel="More options menu"
                   {...triggerProps}
                 >
-                  <HamburgerIcon color="white" size="md" />
+                  <Icon
+                    as={Ionicons}
+                    name="ellipsis-horizontal"
+                    color={colors.text.white}
+                    mx="3"
+                    mt="3"
+                    size="xl"
+                  />
                 </Pressable>
               );
             }}
           >
             {isAdmin && (
               <Menu.Item
-                onPress={() => navigation.navigate("Create Event Screen")}
+                onPress={() => navigation.navigate('Create Event Screen')}
               >
                 Create Event
               </Menu.Item>
@@ -95,11 +119,17 @@ const Header = () => {
               </Link>
             </Menu.Item>
           </Menu>
-
-          <Image source={tandtlogo} alt="T&T" size="xs" width="80%" ml="2" />
+          {/* <Image source={tandtlogo} alt="T&T" size="xs" width="80%" ml="2" /> */}
         </HStack>
+        <View h="80%" style={{ justifyContent: 'center' }} pl="3">
+          <Text fontSize="lg" color="gray.200">
+            Welcome,
+          </Text>
+          <Text fontSize="3xl" color={colors.text.white} bold>
+            {auth.currentUser?.displayName}!
+          </Text>
+        </View>
       </Box>
-      <Divider bg="red.400" />
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         <Modal.Content maxWidth="400px">
           <Modal.CloseButton />

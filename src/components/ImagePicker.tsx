@@ -1,7 +1,8 @@
-import { Box, Button, Center, Image, Text } from "native-base";
-import React, { FC, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import * as ExpoImagePicker from "expo-image-picker";
+import { Box, Button, Center, Image, Text } from 'native-base';
+import React, { FC, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import * as ExpoImagePicker from 'expo-image-picker';
+import { colors } from '../constants/themes';
 
 const ImagePicker: FC<{
   setParentImageState: (imageUri: string) => void;
@@ -16,10 +17,10 @@ const ImagePicker: FC<{
       quality: 1,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       // console.log(result.uri);
-      setImageState(result.uri);
-      setParentImageState(result.uri);
+      setImageState(result.assets[0].uri);
+      setParentImageState(result.assets[0].uri);
     }
   };
 
@@ -46,7 +47,12 @@ const ImagePicker: FC<{
         </Center>
       )}
 
-      <Button mt="3" onPress={() => buttonHandler()}>
+      <Button
+        rounded="3xl"
+        bgColor={colors.text.highlight}
+        mt="3"
+        onPress={() => buttonHandler()}
+      >
         Select Image
       </Button>
     </View>

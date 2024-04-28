@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Keyboard,
   ImageBackground,
   Dimensions,
   StatusBar,
-} from "react-native";
+} from 'react-native';
 import {
   Input,
   Center,
@@ -14,37 +14,36 @@ import {
   useToast,
   FormControl,
   Icon,
-  IconButton,
   View,
-} from "native-base";
-import validator from "validator";
+} from 'native-base';
 
-import User from "../classes/User";
-import generatePushNotificationsToken from "../helper/Notifications/generatePushNotificationToken";
+import User from '../classes/User';
+import generatePushNotificationsToken from '../helper/Notifications/generatePushNotificationToken';
 
-import { auth } from "../../firebase";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { auth } from '../../firebase';
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
-import TTBackground from "../../assets/images/TTLoginBackground.png";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import TTBackground from '../../assets/images/TTLoginBackground.png';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import InstagramButton from "../components/InstagramButton";
+import InstagramButton from '../components/InstagramButton';
+import { FirebaseError } from 'firebase/app';
 
 const SignInScreen = ({ navigation }) => {
   const toast = useToast();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<null | string>(null);
 
-  const buttonWidth = "85%";
-  const buttonHeight = "16";
-  const inputFieldWidth = "85%";
+  const buttonWidth = '85%';
+  const buttonHeight = '16';
+  const inputFieldWidth = '85%';
 
   useEffect(() => {
     setLoading(false);
-    setPassword("");
+    setPassword('');
   }, []);
 
   const handleSignIn = async () => {
@@ -62,38 +61,40 @@ const SignInScreen = ({ navigation }) => {
       const isUserApproved = await User.isApproved(userId);
 
       if (isUserApproved) {
-        console.log("first");
+        console.log('first');
 
         const pushNotificationToken = await generatePushNotificationsToken();
         User.updatePushNotificationToken(userId, pushNotificationToken);
 
         setLoading(false);
-        toast.show({ description: "Successfully Logged In! :)" });
-        navigation.navigate("Home Screen");
+        toast.show({ description: 'Successfully Logged In! :)' });
+        navigation.navigate('Home Screen');
       } else {
         await signOut(auth);
 
         setLoading(false);
-        toast.show({ description: "Account pending approval" });
+        toast.show({ description: 'Account pending approval' });
         // navigation.navigate("Approval Screen");
       }
     } catch (error) {
-      // console.log(error);
-      // console.log(error?.message);
-      console.log(error.code);
+      console.log(error);
 
-      switch (error.code) {
-        case "auth/invalid-email":
-          setError("Incorrect login details");
-          break;
-        case "auth/wrong-password":
-          setError("Incorrect login details");
-          break;
-        case "auth/too-many-requests":
-          setError("Incorrect login details");
-          break;
-        default:
-          break;
+      if (error instanceof FirebaseError) {
+        console.error(error.code);
+
+        switch (error.code) {
+          case 'auth/invalid-email':
+            setError('Incorrect login details');
+            break;
+          case 'auth/wrong-password':
+            setError('Incorrect login details');
+            break;
+          case 'auth/too-many-requests':
+            setError('Incorrect login details');
+            break;
+          default:
+            break;
+        }
       }
 
       setLoading(false);
@@ -102,12 +103,12 @@ const SignInScreen = ({ navigation }) => {
 
   const checkFormFilledOut = () => {
     if (!email) {
-      setError("You must enter an email");
+      setError('You must enter an email');
       return false;
     }
 
     if (!password) {
-      setError("You must enter a password");
+      setError('You must enter a password');
       return false;
     }
 
@@ -116,7 +117,7 @@ const SignInScreen = ({ navigation }) => {
 
   return (
     <>
-      <StatusBar animated={true} showHideTransition={"slide"} hidden={true} />
+      <StatusBar animated={true} showHideTransition={'slide'} hidden={true} />
       <ImageBackground
         source={TTBackground}
         resizeMode="stretch"
@@ -124,7 +125,7 @@ const SignInScreen = ({ navigation }) => {
         blurRadius={20}
       >
         <Center padding="8" w="full" h="full" ml="3.5">
-          <FormControl w="full" isInvalid={error}>
+          <FormControl w="full" isInvalid={!!error}>
             <FormControl.Label>
               <Text bold color="black">
                 Email
@@ -224,7 +225,7 @@ const SignInScreen = ({ navigation }) => {
               my="3"
               bg="white"
               style={styles.dropShadow}
-              onPress={() => navigation.navigate("Register Screen")}
+              onPress={() => navigation.navigate('Register Screen')}
             >
               <Text color="black">Register</Text>
             </Button>
@@ -244,14 +245,14 @@ export default SignInScreen;
 
 const styles = StyleSheet.create({
   backgroundImage: {
-    position: "absolute",
+    position: 'absolute',
     left: 0,
     top: 0,
-    width: Dimensions.get("window").width + 20,
-    height: Dimensions.get("window").height + 20,
+    width: Dimensions.get('window').width + 20,
+    height: Dimensions.get('window').height + 20,
   },
   dropShadow: {
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
