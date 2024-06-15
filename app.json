@@ -14,15 +14,12 @@
       "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/27490e4d-89dd-4c32-b93e-cb439cd6a4a8"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "googleServicesFile": "./google-services.json",
-      "useNextNotificationsApi": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

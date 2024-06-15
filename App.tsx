@@ -1,3 +1,4 @@
+import 'expo-dev-client';
 import { LogBox, StyleSheet } from 'react-native';
 import { NativeBaseProvider } from 'native-base';
 import React, { useEffect, useRef, useState } from 'react';

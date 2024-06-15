@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "562110916039",
+    "project_id": "talktorque-4d234",
+    "storage_bucket": "talktorque-4d234.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:562110916039:android:19c5f46deec2f98e6d65e2",
+        "android_client_info": {
+          "package_name": "com.kashpitan.talkandtorque"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "562110916039-8rqi8jhnsccks0qjia96qdhtb7k78dil.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkDqJD5oK5B5ajrgUpDZPy6mAnlKcZHmg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "562110916039-8rqi8jhnsccks0qjia96qdhtb7k78dil.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
