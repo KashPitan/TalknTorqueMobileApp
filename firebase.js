@@ -58,7 +58,7 @@ if (__DEV__) {
     );
 
     connectFirestoreEmulator(
-      firestore,
+      db,
       LOCAL_CONFIG.emulatorHost,
       LOCAL_CONFIG.firestorePort
     );
