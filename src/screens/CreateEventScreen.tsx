@@ -19,19 +19,17 @@ import { DateTime as Luxon } from 'luxon';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import ImagePicker from '../components/ImagePicker';
 
-import {
-  collection,
-  addDoc,
-  Timestamp,
-  serverTimestamp,
-} from 'firebase/firestore';
+import { Timestamp, serverTimestamp } from 'firebase/firestore';
 
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage, db } from '../../firebase';
+import { storage } from '../../firebase';
 
 import { EventRecordType } from '../../types';
 import Event from '../classes/Event';
 import { colors } from '../constants/themes';
+import { useNavigation } from '@react-navigation/native';
+
+type Mode = 'date' | 'time';
 
 const CreateEventScreen = () => {
   const [formState, setFormState] = useState({
@@ -56,7 +54,9 @@ const CreateEventScreen = () => {
   const [isSubmittingForm, setIsSubmittingForm] = useState<boolean>(false);
 
   const [datePickerVisible, setDatePickerVisible] = useState(false);
-  const [mode, setMode] = useState<string>('date');
+  const [mode, setMode] = useState<Mode>('date');
+
+  const navigation = useNavigation();
 
   const onChangeDate = (event, selectedDate) => {
     // this function is called when you hit confirm or cancel which causes the app to crash
@@ -139,6 +139,7 @@ const CreateEventScreen = () => {
 
     await Event.uploadEvent(newEventDoc);
 
+    navigation.navigate('Home Screen');
     setIsSubmittingForm(false);
   };
 
@@ -150,7 +151,7 @@ const CreateEventScreen = () => {
     //convert image to array of bytes
     const img = await fetch(image);
     const bytes = await img.blob();
-    const upload = await uploadBytes(eventImageRef, bytes);
+    await uploadBytes(eventImageRef, bytes);
 
     const eventImageDownloadUrl = await getDownloadURL(eventImageRef);
     return eventImageDownloadUrl;
@@ -346,5 +347,3 @@ const CreateEventScreen = () => {
 };
 
 export default CreateEventScreen;
-
-const styles = StyleSheet.create({});

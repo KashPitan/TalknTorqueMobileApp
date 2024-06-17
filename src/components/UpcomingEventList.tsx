@@ -4,7 +4,6 @@ import { EventType } from '../../types';
 import UpcomingEventItem from './UpcomingEventItem';
 
 const UpcomingEventList: FC<{ eventList: EventType[] }> = ({
-  children,
   eventList,
 }): JSX.Element => {
   return (
