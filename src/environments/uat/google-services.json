@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:562110916039:android:19c5f46deec2f98e6d65e2",
         "android_client_info": {
-          "package_name": "com.kashpitan.talkandtorque"
+          "package_name": "com.kashpitan.talkandtorque.uat"
         }
       },
       "oauth_client": [

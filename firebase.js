@@ -12,6 +12,7 @@ const LOCAL_CONFIG = {
   storagePort: 9199,
 };
 
+// differentiate prod and preview configs using EAS_BUILD_PROFILE env variable and EAS_BUILD=true
 let firebaseConfig = {
   apiKey: 'AIzaSyBkDqJD5oK5B5ajrgUpDZPy6mAnlKcZHmg',
   authDomain: 'talktorque-4d234.firebaseapp.com',
