@@ -9,7 +9,7 @@ import EventDetails from '../components/EventScreen/EventDetails';
 import EventImage from '../components/EventScreen/EventImage';
 import { colors } from '../constants/themes';
 
-const EventScreen = ({ route, children }) => {
+const EventScreen = ({ route }) => {
   const { event } = route.params;
 
   const layout = useWindowDimensions();
@@ -19,6 +19,7 @@ const EventScreen = ({ route, children }) => {
     { key: 'eventDetails', title: 'Details' },
     { key: 'eventAttendance', title: 'Attendance' },
   ]);
+
   const eventDetailsComponent = () => {
     return <EventDetails event={event} />;
   };
@@ -40,7 +41,7 @@ const EventScreen = ({ route, children }) => {
   const renderTabBar = (props) => {
     return (
       <Box flexDirection="row">
-        {props.navigationState.routes.map((route, i) => {
+        {props.navigationState.routes.map((route, i: number) => {
           const borderColor =
             index === i
               ? colors.text.highlight
@@ -48,7 +49,6 @@ const EventScreen = ({ route, children }) => {
           return (
             <Pressable
               onPress={() => {
-                console.log(i);
                 setIndex(i);
               }}
               borderBottomWidth="3"
