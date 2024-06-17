@@ -76,3 +76,4 @@ dist/
 
 
 *.log
+/local-emulator-data
