@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { getDownloadURL, ref } from 'firebase/storage';
 
-import { HStack, Text, Center, Button, Image, VStack, Icon } from 'native-base';
+import { HStack, Text, Center, Image, Icon } from 'native-base';
 import React, { FC, useEffect, useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -12,7 +12,6 @@ import { colors } from '../constants/themes';
 import { Pressable } from 'native-base';
 
 const UpcomingEventItem: FC<{ event: EventType }> = ({
-  children,
   event,
 }): JSX.Element => {
   const firebaseStorageReference = ref(storage, event.imageUri);
@@ -49,9 +48,12 @@ const UpcomingEventItem: FC<{ event: EventType }> = ({
                 },
               ],
             }}
+            borderWidth="2"
+            borderColor="gray.300"
+            borderRadius="lg"
             rounded="lg"
-            shadow={6}
-            bgColor={isPressed ? 'gray.200' : 'white'}
+            shadow={isPressed ? 0 : 6}
+            bgColor={isPressed ? 'gray.200' : 'gray.100'}
           >
             <Center>
               <Image
