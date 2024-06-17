@@ -9,7 +9,7 @@ const UpcomingEvents: FC<{ events: EventType[] }> = ({
 }): JSX.Element => {
   return (
     <Center>
-      {/* <Text
+      <Text
         alignSelf="flex-start"
         fontSize="lg"
         bold
@@ -21,25 +21,21 @@ const UpcomingEvents: FC<{ events: EventType[] }> = ({
       </Text>
 
       <Box w="full" mt="2">
-        {events.length > 0 ? (
-          <>
-            <FlatList
-              keyExtractor={(item, index) => index.toString()}
-              data={events.slice(1)}
-              renderItem={(item) => (
-                <>
-                  <EventCardSmall event={item.item} />
-                </>
-              )}
-              showsHorizontalScrollIndicator={false}
-              horizontal
-              initialScrollIndex={0}
-            ></FlatList>
-          </>
-        ) : (
-          <Text>No Upcoming Events :(</Text>
-        )}
-      </Box> */}
+        <>
+          <FlatList
+            keyExtractor={(item, index) => index.toString()}
+            data={events.slice(1)}
+            renderItem={(item) => (
+              <>
+                <EventCardSmall event={item.item} />
+              </>
+            )}
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            initialScrollIndex={0}
+          ></FlatList>
+        </>
+      </Box>
     </Center>
   );
 };

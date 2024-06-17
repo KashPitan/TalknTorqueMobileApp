@@ -1,4 +1,4 @@
-import { FieldValue, Timestamp } from "firebase/firestore";
+import { FieldValue, Timestamp } from 'firebase/firestore';
 
 export interface EventType {
   month: string;
@@ -7,7 +7,7 @@ export interface EventType {
   location: string;
   description?: string;
   imageUri?: string;
-  fullDate?: string;
+  fullDate: string;
   gmapsLink?: string;
   id: string;
   attendance: string[];

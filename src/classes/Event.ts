@@ -1,5 +1,5 @@
 import { EventType } from '../../types';
-import { DateTime, DateTime as Luxon } from 'luxon';
+import { DateTime as Luxon } from 'luxon';
 import {
   collection,
   getDocs,
@@ -21,7 +21,7 @@ export default class Event implements EventType {
   createdAt: FieldValue;
   description?: string;
   imageUri?: string;
-  fullDate?: string;
+  fullDate: string;
   gmapsLink?: string;
   id: string;
 
@@ -33,9 +33,9 @@ export default class Event implements EventType {
     id: string,
     attendance: string[],
     createdAt: FieldValue,
+    fullDate: string,
     description?: string,
     imageUri?: string,
-    fullDate?: string,
     gmapsLink?: string
   ) {
     this.month = month;
@@ -55,6 +55,20 @@ export default class Event implements EventType {
 
   static uploadEvent = async (eventRecord: EventRecordType) => {
     await addDoc(collection(db, 'events'), eventRecord);
+  };
+
+  static getUpcomingEvents = (events: EventType[]): EventType[] => {
+    const today = Luxon.now().toMillis();
+    const upcomingEvents = events.filter((event) => {
+      const eventDate = Luxon.fromFormat(
+        event.fullDate,
+        'cccc, d LLLL, yyyy'
+      ).toMillis();
+      console.log(eventDate);
+      console.log(eventDate > today);
+      return true;
+    });
+    return upcomingEvents;
   };
 
   static getMostRecentEvents = async () => {

@@ -1,4 +1,4 @@
-import { Box, Text, ScrollView, Center, Skeleton, FlatList } from 'native-base';
+import { Box, Text, ScrollView, Center, Skeleton } from 'native-base';
 import React, { useCallback, useEffect, useState } from 'react';
 import { RefreshControl } from 'react-native';
 
@@ -20,6 +20,8 @@ const HomeScreen = () => {
   const [events, setEvents] = useState<EventType[] | undefined>(undefined);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+
+  const upcomingEvents = Event.getUpcomingEvents(events ?? []);
 
   const getScreenData = async () => {
     setRefreshing(true);
@@ -64,7 +66,6 @@ const HomeScreen = () => {
         }
       >
         <Header />
-
         <Text fontSize="3xl" color={colors.text.main} bold ml="7" mt="3">
           Explore Events
         </Text>
@@ -75,12 +76,16 @@ const HomeScreen = () => {
         {events ? (
           <>
             <NextEvent events={events} />
-            <UpcomingEvents events={events} />
+
+            {/* // exclude top event as will be shown in next event section */}
+            {upcomingEvents.length > 1 && (
+              <UpcomingEvents events={upcomingEvents} />
+            )}
             <PastEvents events={events} />
           </>
         ) : (
           <>
-            <Skeleton.Text
+            {/* <Skeleton.Text
               lines={1}
               bg={colors.text.highlight}
               my="2"
@@ -103,7 +108,7 @@ const HomeScreen = () => {
               w="40%"
               rounded="xl"
               ml="5"
-            />
+            /> */}
             {/* {upcomingEventsSkeleton} */}
           </>
         )}
