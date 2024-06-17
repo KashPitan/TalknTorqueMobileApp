@@ -1,4 +1,4 @@
-import { Box, Text, ScrollView, Center, Skeleton } from 'native-base';
+import { Box, Text, ScrollView, Center, Skeleton, View } from 'native-base';
 import React, { useCallback, useEffect, useState } from 'react';
 import { RefreshControl } from 'react-native';
 
@@ -54,12 +54,12 @@ const HomeScreen = () => {
     (async () => {
       await getScreenData();
     })();
-    console.log(events);
   }, []);
 
   return (
     <>
       <ScrollView
+        mt={-2}
         bg={colors.background}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
