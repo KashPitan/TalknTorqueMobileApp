@@ -8,10 +8,7 @@ import MapView, { Marker } from 'react-native-maps';
 
 import { geocode } from '../../api/geocode';
 
-const EventDetails: FC<{ event: EventType }> = ({
-  children,
-  event,
-}): JSX.Element => {
+const EventDetails: FC<{ event: EventType }> = ({ event }): JSX.Element => {
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -75,30 +72,33 @@ const EventDetails: FC<{ event: EventType }> = ({
           </Text>
           <Center>
             {location && (
-              <MapView
-                style={{
-                  flex: 1,
-                  width: '100%',
-                  height: 300,
-                  borderRadius: 30,
-                }}
-                provider="google"
-                scrollEnabled={true}
-                zoomEnabled={true}
-                region={{
-                  latitude: location.latitude,
-                  longitude: location.longitude,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
-              >
-                <Marker
-                  coordinate={{
+              <>
+                {/* 
+                <MapView
+                  style={{
+                    flex: 1,
+                    width: '100%',
+                    height: 300,
+                    borderRadius: 30,
+                  }}
+                  provider="google"
+                  scrollEnabled={true}
+                  zoomEnabled={true}
+                  region={{
                     latitude: location.latitude,
                     longitude: location.longitude,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
                   }}
-                />
-              </MapView>
+                >
+                  <Marker
+                    coordinate={{
+                      latitude: location.latitude,
+                      longitude: location.longitude,
+                    }}
+                  />
+                </MapView>*/}
+              </>
             )}
 
             {event.gmapsLink && (
